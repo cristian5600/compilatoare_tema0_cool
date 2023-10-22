@@ -16,7 +16,7 @@ class Product {
     getprice():Int{ price * 119 / 100 };
 
     toString():String {
-        "TODO: implement me"
+        name.concat(" ").concat(model).concat(" ").concat((new A2I).i2a_aux(price))
     };
 };
 
@@ -54,7 +54,7 @@ class Rank {
 
     toString():String {
         -- Hint: what are the default methods of Object?
-        "TODO: implement me"
+        (new IO).out_string(name).concat(" ").concat(self.type_name())
     };
 };
 
@@ -65,3 +65,4 @@ class Corporal inherits Private {};
 class Sergent inherits Corporal {};
 
 class Officer inherits Sergent {};
+

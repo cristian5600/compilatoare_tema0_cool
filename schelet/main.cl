@@ -3,11 +3,13 @@ class Main inherits IO{
     looping : Bool <- true;
     somestr : String;
 
-    main():Object {
-        while looping loop {
-            out_string("Your name: ");
-            somestr <- in_string();
-            out_string("Hi ".concat(somestr).concat("\n"));
-        } pool
+    main() : Object {
+        {
+            let p : Product <- new Product.init("nume","model",13) in{
+                out_string(p.toString());
+                0;
+            };
+            
+        }
     };
 };
