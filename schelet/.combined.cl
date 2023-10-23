@@ -1,13 +1,99 @@
-class List {
+class List inherits IO{
 
     (* TODO: store data *)
+    elem : Object;
+    next : List;
 
-    add(o : Object):SELF_TYPE {
-        self (* TODO *)
+    init(e : Object, n : List) : List {
+        {
+            elem <- e;
+            next <- n;
+            self;
+        }
+    };
+
+    extractNext() : List{
+        {
+        next;
+        }
+    };
+    setNext(l:List) : List{
+        {
+            --out_string("am setat next??\n");
+            next <- l;
+        --self;
+        }
+    };
+    getContent() : Object {
+        {
+        elem;
+        }
+    };
+    add(obj : Object):SELF_TYPE {
+        let null:List,
+            coppy:List <- self,
+            aux : List <- new List.init(obj,null)  
+                in 
+                {
+                    --out_string(self.toString().concat("\n"));
+                    coppy.setNext(self.extractNext());
+                    --out_string(coppy.toString());
+                    while ( not (isvoid coppy.extractNext()) ) loop
+                    {
+                        --out_string("intrat in while????\n");
+                        coppy <- coppy.extractNext();
+                        
+                        
+                    }
+                    pool;  
+                    coppy.setNext(aux);
+                    self;
+                }
+         
     };
 
     toString():String {
-        "[TODO: implement me]"
+        let coppy:List <- self.copy(),
+            null:List,
+            aux:Object,
+            count:Int <-0,
+            result:String <- "" in --self.getContent().type_name() in 
+            {
+                
+                aux <- coppy.getContent();
+                --out_string(aux.type_name());
+                case aux of
+                        p : Product => {result <- result.concat(p.toString());};  
+                        r : Rank => {result <-    result.concat(r.toString());};                 
+                        o : Object  => { abort(); ""; };
+                esac;
+                -- if ( not (isvoid coppy.extractNext()) ) then
+                --     coppy <- coppy.extractNext() 
+                -- else 0 fi;
+
+                while ( not (isvoid coppy.extractNext()) ) loop
+                {
+                    coppy <- coppy.extractNext();
+                    --out_string("AM INTRAT in lista\n");
+                    aux <- coppy.getContent();
+                    case aux of
+                        p : Product => {result <-(result.concat(p.toString()));};
+                        r : Rank => {result <-   (result.concat(r.toString()));}; 
+                        --s : String  => {result.concat(s).concat(" ");};
+                        o : Object  => { abort(); ""; };
+                    esac;
+                    
+                    
+                    
+                   
+                }
+                pool;
+                --out_string(result);
+                --result.concat(")");
+
+                result;
+            }
+
     };
 
     merge(other : List):SELF_TYPE {
@@ -21,21 +107,65 @@ class List {
     sortBy():SELF_TYPE {
         self (* TODO *)
     };
-};class Main inherits IO{
-    lists : List;
+};
+class Main inherits IO{
+    lists : List <- new List;
     looping : Bool <- true;
     somestr : String;
+    null : Product;
 
-    main() : Object {
-        {
-            let p : Product <- new Product.init("nume","model",13) in{
-                out_string(p.toString());
-                0;
-            };
+    main():Object {
+        while looping loop {
+            somestr <- in_string();
+            if(somestr = "test") then
+            {
+                if (isvoid null) then
+                {
+                let null : List,
+                    elem:List <- new List in{
+                        elem.init((new Product).init("a","b",3),null);
+                        elem.add((new Soda).init("c","d",67));
+                        elem.add((new Coffee).init("e","f",632));
+                        elem.add((new Laptop).init("g","h",4545));
+                        elem.add((new Router).init("cads","dsd",2167));
+                        elem.add((new Rank).init("marinescu")); --SELF_TYPE necesitate la init
+                        elem.add((new Corporal).init("ciobotaru"));
+                        
+                        out_string("\n"
+                        .concat("[")
+                        .concat(elem.toString())
+                        .concat("]\n"));
+
+                };
+
+                out_string("---");
+                out_string("---");
+
+
+                }
+                else 0
+                fi;               
+            }
+            else 0 fi;
+            if(somestr = "load") then{
+                let input:String <- "",
+                    input_list:List in
+                    {
+                    while looping loop {
+                        input <- in_string();
+                        out_string("ceva");
+                    }
+                    pool; 
+                    
+                    
+                    };
             
-        }
+            }
+            else 0 fi; 
+            } pool
     };
 };
+
 (*******************************
  *** Classes Product-related ***
  *******************************)
@@ -54,7 +184,8 @@ class Product {
     getprice():Int{ price * 119 / 100 };
 
     toString():String {
-        name.concat(" ").concat(model).concat(" ").concat((new A2I).i2a_aux(price))
+        --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(";").concat((new A2I).i2a_aux(price).concat(")"))
+        self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
     };
 };
 
@@ -86,13 +217,18 @@ class Router inherits Product {};
 class Rank {
     name : String;
 
-    init(n : String):String {
-        name <- n
+    init(n : String):SELF_TYPE {
+        {
+        name <- n;
+        self;
+        }
     };
 
     toString():String {
         -- Hint: what are the default methods of Object?
-        "TODO: implement me"
+        
+        (self.type_name().concat("(").concat(name).concat(")"))
+
     };
 };
 
