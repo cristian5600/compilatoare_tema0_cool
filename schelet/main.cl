@@ -40,10 +40,24 @@ class Main inherits IO{
             if(somestr = "load") then{
                 let input:String <- "",
                     input_list:List in
-                    {
+                    {   
                     while looping loop {
-                        input <- in_string();
-                        out_string("ceva");
+                        -- input <- in_string();
+                        -- --(new Token).getTokenList("stringulmeu");
+                        -- --out_string("ceva".substr(1,1));
+                        -- if((new Token).whereSpace("as a") < 100) then
+                        --     out_int((new Token).whereSpace("sdaa ezo lbat asta"))
+                        -- else 0 fi;
+                        -- looping = false;
+                        -- out_string(
+                        --     ((new Token).getTokenList("am rezolvat chestia asta yess"))
+                        --     .getContent().type_name());
+                        -- let mylist:List,
+                        --     token:Token <- new Token in{
+                        --     mylist <- token.getTokenList("am rezolvat chestia asta yess");
+                        --     out_string(mylist.toString());
+                        };
+                        --(new Token).getTokenList("am rezolvat chestia asta yess");
                     }
                     pool; 
                     

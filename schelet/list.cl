@@ -64,8 +64,9 @@ class List inherits IO{
                 --out_string(aux.type_name());
                 case aux of
                         p : Product => {result <- result.concat(p.toString());};  
-                        r : Rank => {result <-    result.concat(r.toString());};                 
-                        o : Object  => { abort(); ""; };
+                        r : Rank => {result <-    result.concat(r.toString());};        
+                        s: String => { result <- "String".concat("(").concat(s).concat(")"); };  --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
+                        o : Object  => { out_string(o.type_name()).out_string("wtf \n"); ""; };
                 esac;
                 -- if ( not (isvoid coppy.extractNext()) ) then
                 --     coppy <- coppy.extractNext() 
@@ -79,7 +80,7 @@ class List inherits IO{
                     case aux of
                         p : Product => {result <-(result.concat(p.toString()));};
                         r : Rank => {result <-   (result.concat(r.toString()));}; 
-                        --s : String  => {result.concat(s).concat(" ");};
+                        s : String  => {result.concat(s).concat(" ");};
                         o : Object  => { abort(); ""; };
                     esac;
                     
@@ -108,3 +109,4 @@ class List inherits IO{
         self (* TODO *)
     };
 };
+
