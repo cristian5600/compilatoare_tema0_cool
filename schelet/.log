@@ -1,2 +1,16 @@
 
-[ String(asd), String(asdas), String(dasd)Product(sdf ;afds) ]ERROR: 182: Exception: dispatch on void
+am initializat lista
+
+am adaugat in lista cu .add 
+
+se printeaza se printeaza:
+[ String(1), String(2') ] 
+ AM INTRAT IN WHILE
+am initializat lista
+ 
+ AM INTRAT IN WHILE
+am adaugat in lista cu .add 
+
+se printeaza se printeaza:
+[ String(1), String(2') ][ String(x), String(y) ][ Product(a;b)Soda(c;d)Coffee(e;f)Laptop(g;h)Router(cads;dsd)Rank(marinescu)Corporal(ciobotaru) ]
+------

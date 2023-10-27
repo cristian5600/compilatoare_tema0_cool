@@ -1,5 +1,6 @@
 class Main inherits IO{
-    lists : List;    
+    lists : List;
+    listsLength: Int;  
     looping : Bool <- true;
     loopingLoad: Bool <- true;
     somestr : String;
@@ -44,9 +45,7 @@ class Main inherits IO{
             else 0 fi;
 
 (*  *****************************************************
-    *****************************************************
-    *****************LOADING***************************** 
-    *****************************************************
+    *****************LOADING***************************** *
     *****************************************************  *)
 
             if(somestr = "load") then{  --
@@ -54,7 +53,8 @@ class Main inherits IO{
                     input_list:List,
                     void:List
                      in
-                    {   
+                    { 
+                        loopingLoad <- true;  
                     while (loopingLoad) loop {
                         input <- in_string();
                         if (not (input = "END")) then 
@@ -67,20 +67,24 @@ class Main inherits IO{
 
                                 mylist <- token.getTokenList( input );
                                 --command<- token.getTokenList( input );
-                                mylist.add(new Product.init("sdf ","afds", 1312));
+                                -- mylist.add(new Product.init("sdf ","afds", 1312));
 
-                                if(isvoid lists) then{
-                                    lists <- new List.init(mylist, void);
-                                } else { lists.add(mylist) ;} fi ;
+                                -- if(isvoid lists) then{
+                                --     lists <- new List.init(mylist, void);
+                                -- } else { lists.add(mylist) ;} fi ;
+                                load(mylist);
                                 
-                                
-                                out_string("\n");
-                                out_string(mylist.toString());
+                                -- out_string("\n");
+                                -- out_string(mylist.toString());
                                 };
                         } 
                         else { loopingLoad <- false; } fi;
                         }pool;
-                    };
+
+                        listsLength <- listsLength + 1;
+
+                        print(1);
+                    }; 
                     
                     
                     
@@ -104,44 +108,88 @@ class Main inherits IO{
     load(cmd : List) : Object {   -- cate o linie
         let 
             cpy : List <- lists,
+            null : List,
             current : List,
+            count:Int <- 0,
             m : Object,
             type: String,
             arg1_str:String,
             arg2_str:String,
             aux:Object
             in{
-                while(not isvoid cpy.extractNext() ) loop{
-                    cpy <- cpy.extractNext();
+                
+                while( count < listsLength) loop{
+                    out_string(" \n AM INTRAT IN WHILE");
+                    cpy   <- cpy.extractNext();
+                    count <- count+1 ;
                 } pool;
 
-                aux <- cpy.getContent(); 
-
-                case aux of 
-                    l : List => { current <- l;}; -- lista unde vom introudce elementul
-                    o : Object  => { abort(); "";};
-                esac;
-                
                 aux <- cmd.getContent();
 
                 case aux of 
-                    s : String => { type <- s; };    -- extrag tipul elementului 
+                    s : String => { type <- s ;};
                     o : Object => { abort(); ""; };
-                esac ;
+                esac;
 
-                if (type = "String") then {
+                if(type = "String") then {
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent(); 
                     case aux of
-                        s : String => { 1=1; };
+                        s : String => { arg1_str <- s ;};
+                        o : Object => { abort(); "";};
                     esac;
-                    1=1;
-                } else 0 fi;
+                        if( isvoid cpy ) then{
 
+                            cpy <- (new List).init(
+                                (new List).init(arg1_str,null)
+                                ,null);
+                                out_string("\nam initializat lista\n");
+
+                                if (isvoid lists ) then {lists <- cpy;} else {
+                                    lists.add((new List).init(arg1_str,null));
+                                }fi;
+                                
+
+                            } else {
+                                -- cpy<-cpy.getContent(); --- TODO
+                                aux <- cpy.getContent();
+                                case aux of 
+                                    l : List => { l.add(arg1_str); };
+                                    o : Object => { abort(); "";};
+                                esac;
+
+                                out_string("\nam adaugat in lista cu .add \n");
+                                -- cpy.add(arg1_str);
+                            } fi;
+                            -- cpy <- cpy.extractNext();
+                } else 0 fi;
 
             }
     };
-           
-        
-    
+    print(index : Int) : Object {
+        let cpy: List <- lists,
+        aux: Object,
+        count:Int <- 0
+         in
+        {
+            out_string( "\nse printeaza se printeaza:\n" );
+            while( count < listsLength) loop {
+
+                aux <- cpy.getContent();
+                case aux of 
+                    l : List => { 
+                        out_string(l.toString());
+                        l <- l.extractNext();
+                    };
+                    o:Object => {abort(); "";};
+                esac;
+
+
+                cpy <- cpy.extractNext();
+                count <- count + 1; 
+
+             } pool;
+        }
+    };
 
 };
-
