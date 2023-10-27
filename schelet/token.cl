@@ -64,9 +64,7 @@ Class Token inherits IO{
                             --out_string("\nam adaugat in lista aux:").out_string(coppy);
                         } fi;
                 } else 0 fi;
-                --out_string(list.toString());
-                --out_string("\ntype of content of list is ").out_string(list.getContent().type_name()).out_string("\n");
-                list;
+                 list;
             }
     };
 

@@ -35,15 +35,10 @@ class List inherits IO{
             aux : List <- new List.init(obj,null)  
                 in 
                 {
-                    --out_string(self.toString().concat("\n"));
                     coppy.setNext(self.extractNext());
-                    --out_string(coppy.toString());
                     while ( not (isvoid coppy.extractNext()) ) loop
                     {
-                        --out_string("intrat in while????\n");
                         coppy <- coppy.extractNext();
-                        
-                        
                     }
                     pool;  
                     coppy.setNext(aux);
@@ -65,28 +60,45 @@ class List inherits IO{
                 case aux of
                         p : Product => {result <- result.concat(p.toString());};  
                         r : Rank => {   result <- result.concat(r.toString());};        
-                        s: String => {  result <- result.concat("String").concat("(").concat(s).concat(")"); };  --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
+                        s : String => {  result <- result.concat("String").concat("(").concat(s).concat(")"); };  --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
                         o : Object  => { abort(); "";};
                 esac;
-                -- if ( not (isvoid coppy.extractNext()) ) then
-                --     coppy <- coppy.extractNext() 
-                -- else 0 fi;
-
                 while ( not (isvoid coppy.extractNext()) ) loop
                 {
                     coppy <- coppy.extractNext();
                     --out_string("AM INTRAT in lista\n");
                     aux <- coppy.getContent();
+                    (*
+Product
+Edible
+Soda 
+Coffee
+Laptop 
+Router
+Rank
+Private
+Corporal
+Sergent
+Officer
+*)
                     case aux of
-                        p : Product => {result <-(result.concat(p.toString()));};
-                        r : Rank => {   result <-(result.concat(r.toString()));}; 
+                        p : Product => {result <-(result.concat(", ").concat(p.toString()));};
+                        p1 : Edible => {result <-(result.concat(", ").concat(p1.toString()));};
+                        p2 : Soda => {result <-  (result.concat(", ").concat(p2.toString()));};
+                        p3: Coffee => {result <- (result.concat(", ").concat(p3.toString()));};
+                        p4 : Laptop => {result <-(result.concat(", ").concat(p4.toString()));};
+                        p5 : Router => {result <-(result.concat(", ").concat(p5.toString()));};
+
+                        r : Rank => {   result <-(     result.concat(", ").concat(r.toString()));};
+                        r1 : Private => {   result <- (result.concat(", ").concat(r1.toString()));}; 
+                        r2 : Corporal => {   result <-(result.concat(", ").concat(r2.toString()));}; 
+                        r3: Sergent => {   result <-  (result.concat(", ").concat(r3.toString()));}; 
+                        r4 : Officer => {   result <- (result.concat(", ").concat(r4.toString()));}; 
+
+
                         s : String  => { result <- result.concat(", String").concat("(").concat(s).concat(")");};
                         o : Object  => { abort(); ""; };
                     esac;
-                    
-                    
-                    
-                   
                 }
                 pool;
                 --out_string(result);

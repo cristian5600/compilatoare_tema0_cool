@@ -1,16 +1,20 @@
 
-am initializat lista
+ sumProductType : 0
+[ Rank(1) ]
 
-am adaugat in lista cu .add 
+ sumProductType : 0
 
-se printeaza se printeaza:
-[ String(1), String(2') ] 
- AM INTRAT IN WHILE
-am initializat lista
- 
- AM INTRAT IN WHILE
-am adaugat in lista cu .add 
+ sumProductType : 0
+1: [ Rank(1) ]
+2: [ Officer(andres), Sergent(miles) ]
 
-se printeaza se printeaza:
-[ String(1), String(2') ][ String(x), String(y) ][ Product(a;b)Soda(c;d)Coffee(e;f)Laptop(g;h)Router(cads;dsd)Rank(marinescu)Corporal(ciobotaru) ]
-------
+ sumProductType : 1
+
+ ???????????????? 
+
+ sumProductType : 0
+
+ sumProductType : 0
+1: [ Rank(1) ]
+2: [ Officer(andres), Sergent(miles) ]
+3: [ Product(1;2), String(!), Rank(pppp) ]
