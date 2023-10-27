@@ -1,12 +1,5 @@
 Class Token inherits IO{
-    -- mystring:String <-"";
 
-    -- init(str:String):SELF_TYPE{
-    -- {
-    --     mystring <- str;
-    --     self;
-    -- }
-    -- };
     whereSpace(str:String):Int{
         
             let 
@@ -15,23 +8,17 @@ Class Token inherits IO{
             result:Int<-0
             in
             {
-                --out_string("am intrat in hasSpace");
                 while (i<str.length()) loop{
-                    --out_string("\n sunt in while 1 ");
                     if(str.substr(i,1) = " ") then
                         {
                         result <- i;
                         i<-str.length();
-                        --out_string("\n sunt in if 234");
                         }
                     else 0 fi;
                     i<-i+1;
-
                 }pool;
                 result;
             }
-            
-        
     };
     getTokenList(str:String):List{
         let 
@@ -44,28 +31,14 @@ Class Token inherits IO{
             in
             {
                 while ( 0 < whereSpace(coppy) ) loop{ --"am rezolvat chestia asta"
-                    
-
-                    --out_string("coppy:").out_string(coppy).out_string("\n");
 
                     len <- whereSpace(coppy); 
-                    
-                    --out_string(" a \n");
+
                     aux <- coppy.substr(0,len);
                     
                     i <- len;
 
                     coppy <- coppy.substr(i+1,coppy.length()-i-1);
-                    
-                    -- out_string(" b \n");
-                    
-                    -- out_string("\naux=");
-                    -- out_string(aux);
-                    -- out_string("\nlen=");
-                    -- out_int(len);
-                    -- out_string("\ni=");
-                    -- out_int(i);
-                    -- out_string("\n\n");
                     
                     if(isvoid list) then 
                         {
@@ -80,7 +53,7 @@ Class Token inherits IO{
                 } pool;
                 
                 if ( 0 < coppy.length() ) then {
-                    --ut_string("aux:").out_string(coppy).out_string("\n");
+                    --out_string("aux:").out_string(coppy).out_string("\n");
                     if(isvoid list) then 
                         {
                             list <- (new List).init(coppy,null) ; 

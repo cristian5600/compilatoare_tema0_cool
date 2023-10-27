@@ -57,16 +57,16 @@ class List inherits IO{
             null:List,
             aux:Object,
             count:Int <-0,
-            result:String <- "" in --self.getContent().type_name() in 
+            result:String <- "[ " in --self.getContent().type_name() in 
             {
                 
                 aux <- coppy.getContent();
                 --out_string(aux.type_name());
                 case aux of
                         p : Product => {result <- result.concat(p.toString());};  
-                        r : Rank => {result <-    result.concat(r.toString());};        
-                        s: String => { result <- "String".concat("(").concat(s).concat(")"); };  --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
-                        o : Object  => { out_string(o.type_name()).out_string("wtf \n"); ""; };
+                        r : Rank => {   result <- result.concat(r.toString());};        
+                        s: String => {  result <- result.concat("String").concat("(").concat(s).concat(")"); };  --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
+                        o : Object  => { abort(); "";};
                 esac;
                 -- if ( not (isvoid coppy.extractNext()) ) then
                 --     coppy <- coppy.extractNext() 
@@ -79,8 +79,8 @@ class List inherits IO{
                     aux <- coppy.getContent();
                     case aux of
                         p : Product => {result <-(result.concat(p.toString()));};
-                        r : Rank => {result <-   (result.concat(r.toString()));}; 
-                        s : String  => {result.concat(s).concat(" ");};
+                        r : Rank => {   result <-(result.concat(r.toString()));}; 
+                        s : String  => { result <- result.concat(", String").concat("(").concat(s).concat(")");};
                         o : Object  => { abort(); ""; };
                     esac;
                     
@@ -91,12 +91,12 @@ class List inherits IO{
                 pool;
                 --out_string(result);
                 --result.concat(")");
-
+                result <- result.concat(" ]");
                 result;
             }
 
     };
-
+    
     merge(other : List):SELF_TYPE {
         self (* TODO *)
     };
@@ -111,10 +111,14 @@ class List inherits IO{
 };
 
 class Main inherits IO{
-    lists : List <- new List;
+    lists : List;    
     looping : Bool <- true;
+    loopingLoad: Bool <- true;
     somestr : String;
     null : Product;
+    aux: Object;
+    auxi: Object;
+    number:Int<- 12;
 
     main():Object {
         while looping loop {
@@ -124,7 +128,8 @@ class Main inherits IO{
                 if (isvoid null) then
                 {
                 let null : List,
-                    elem:List <- new List in{
+                    elem:List <- new List,
+                    aux : Object in{
                         elem.init((new Product).init("a","b",3),null);
                         elem.add((new Soda).init("c","d",67));
                         elem.add((new Coffee).init("e","f",632));
@@ -132,15 +137,15 @@ class Main inherits IO{
                         elem.add((new Router).init("cads","dsd",2167));
                         elem.add((new Rank).init("marinescu")); --SELF_TYPE necesitate la init
                         elem.add((new Corporal).init("ciobotaru"));
+                        aux <- (new Corporal).init("ciobotaru");
                         
-                        out_string("\n"
-                        .concat("[")
-                        .concat(elem.toString())
-                        .concat("]\n"));
+                        out_string(elem.toString());
+                        
+                        
 
                 };
 
-                out_string("---");
+                out_string("\n---");
                 out_string("---");
 
 
@@ -149,37 +154,107 @@ class Main inherits IO{
                 fi;               
             }
             else 0 fi;
-            if(somestr = "load") then{
-                let input:String <- "",
-                    input_list:List in
+
+(*  *****************************************************
+    *****************************************************
+    *****************LOADING***************************** 
+    *****************************************************
+    *****************************************************  *)
+
+            if(somestr = "load") then{  --
+                let input:String <- "?",
+                    input_list:List,
+                    void:List
+                     in
                     {   
-                    while looping loop {
+                    while (loopingLoad) loop {
                         input <- in_string();
-                        --(new Token).getTokenList("stringulmeu");
-                        --out_string("ceva".substr(1,1));
-                        if((new Token).whereSpace("as a") < 100) then
-                            out_int((new Token).whereSpace("sdaa ezo lbat asta"))
-                        else 0 fi;
-                        looping = false;
-                        out_string(
-                            ((new Token).getTokenList("am rezolvat chestia asta yess"))
-                            .getContent().type_name());
-                        let mylist:List,
-                            token:Token <- new Token in{
-                            mylist <- token.getTokenList("am rezolvat chestia asta yess");
-                            out_string(mylist.toString());
-                        };
-                        --(new Token).getTokenList("am rezolvat chestia asta yess");
-                    }
-                    pool; 
-                    
-                    
+                        if (not (input = "END")) then 
+                        {                           
+                            --loopingLoad <- false;
+                            let mylist:List,
+                                token:Token <- new Token ,
+                                command : List
+                                in{
+
+                                mylist <- token.getTokenList( input );
+                                --command<- token.getTokenList( input );
+                                mylist.add(new Product.init("sdf ","afds", 1312));
+
+                                if(isvoid lists) then{
+                                    lists <- new List.init(mylist, void);
+                                } else { lists.add(mylist) ;} fi ;
+                                
+                                
+                                out_string("\n");
+                                out_string(mylist.toString());
+                                };
+                        } 
+                        else { loopingLoad <- false; } fi;
+                        }pool;
                     };
+                    
+                    
+                    
+                    
             
-            }
-            else 0 fi; 
+            } else 0 fi; 
+
+            -- if ( somestr = "print" ) then {
+            --     out_string("\n PRINTING: \n");
+            --     aux <- lists.getContent();
+            --     case aux of 
+            --         l : List => { out_string(l.toString()) ;};
+            --         o : Object  => { abort(); "";};
+            --     esac;
+            -- } else 0 fi;
+            
+
             } pool
     };
+
+    load(cmd : List) : Object {   -- cate o linie
+        let 
+            cpy : List <- lists,
+            current : List,
+            m : Object,
+            type: String,
+            arg1_str:String,
+            arg2_str:String,
+            aux:Object
+            in{
+                while(not isvoid cpy.extractNext() ) loop{
+                    cpy <- cpy.extractNext();
+                } pool;
+
+                aux <- cpy.getContent(); 
+
+                case aux of 
+                    l : List => { current <- l;}; -- lista unde vom introudce elementrul
+                    o : Object  => { abort(); "";};
+                esac;
+                
+                aux <- cmd.getContent();
+
+                case aux of 
+                    s : String => { type <- s; };    -- extrag tipul elementului 
+                    o : Object => { abort(); ""; };
+                esac ;
+
+                if (type = "String") then {
+                    case aux of
+                        s : String => { 1=1; };
+                    esac;
+                    1=1;
+                } else 0 fi;
+
+
+            }
+    };
+           
+        
+    
+
 };
 
 (*******************************
@@ -257,14 +332,7 @@ class Sergent inherits Corporal {};
 class Officer inherits Sergent {};
 
 Class Token inherits IO{
-    -- mystring:String <-"";
 
-    -- init(str:String):SELF_TYPE{
-    -- {
-    --     mystring <- str;
-    --     self;
-    -- }
-    -- };
     whereSpace(str:String):Int{
         
             let 
@@ -273,23 +341,17 @@ Class Token inherits IO{
             result:Int<-0
             in
             {
-                --out_string("am intrat in hasSpace");
                 while (i<str.length()) loop{
-                    --out_string("\n sunt in while 1 ");
                     if(str.substr(i,1) = " ") then
                         {
                         result <- i;
                         i<-str.length();
-                        --out_string("\n sunt in if 234");
                         }
                     else 0 fi;
                     i<-i+1;
-
                 }pool;
                 result;
             }
-            
-        
     };
     getTokenList(str:String):List{
         let 
@@ -302,28 +364,14 @@ Class Token inherits IO{
             in
             {
                 while ( 0 < whereSpace(coppy) ) loop{ --"am rezolvat chestia asta"
-                    
-
-                    --out_string("coppy:").out_string(coppy).out_string("\n");
 
                     len <- whereSpace(coppy); 
-                    
-                    --out_string(" a \n");
+
                     aux <- coppy.substr(0,len);
                     
                     i <- len;
 
                     coppy <- coppy.substr(i+1,coppy.length()-i-1);
-                    
-                    -- out_string(" b \n");
-                    
-                    -- out_string("\naux=");
-                    -- out_string(aux);
-                    -- out_string("\nlen=");
-                    -- out_int(len);
-                    -- out_string("\ni=");
-                    -- out_int(i);
-                    -- out_string("\n\n");
                     
                     if(isvoid list) then 
                         {
@@ -338,7 +386,7 @@ Class Token inherits IO{
                 } pool;
                 
                 if ( 0 < coppy.length() ) then {
-                    --ut_string("aux:").out_string(coppy).out_string("\n");
+                    --out_string("aux:").out_string(coppy).out_string("\n");
                     if(isvoid list) then 
                         {
                             list <- (new List).init(coppy,null) ; 

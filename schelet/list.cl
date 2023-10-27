@@ -57,16 +57,16 @@ class List inherits IO{
             null:List,
             aux:Object,
             count:Int <-0,
-            result:String <- "" in --self.getContent().type_name() in 
+            result:String <- "[ " in --self.getContent().type_name() in 
             {
                 
                 aux <- coppy.getContent();
                 --out_string(aux.type_name());
                 case aux of
                         p : Product => {result <- result.concat(p.toString());};  
-                        r : Rank => {result <-    result.concat(r.toString());};        
-                        s: String => { result <- "String".concat("(").concat(s).concat(")"); };  --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
-                        o : Object  => { out_string(o.type_name()).out_string("wtf \n"); ""; };
+                        r : Rank => {   result <- result.concat(r.toString());};        
+                        s: String => {  result <- result.concat("String").concat("(").concat(s).concat(")"); };  --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
+                        o : Object  => { abort(); "";};
                 esac;
                 -- if ( not (isvoid coppy.extractNext()) ) then
                 --     coppy <- coppy.extractNext() 
@@ -79,8 +79,8 @@ class List inherits IO{
                     aux <- coppy.getContent();
                     case aux of
                         p : Product => {result <-(result.concat(p.toString()));};
-                        r : Rank => {result <-   (result.concat(r.toString()));}; 
-                        s : String  => {result.concat(s).concat(" ");};
+                        r : Rank => {   result <-(result.concat(r.toString()));}; 
+                        s : String  => { result <- result.concat(", String").concat("(").concat(s).concat(")");};
                         o : Object  => { abort(); ""; };
                     esac;
                     
@@ -91,12 +91,12 @@ class List inherits IO{
                 pool;
                 --out_string(result);
                 --result.concat(")");
-
+                result <- result.concat(" ]");
                 result;
             }
 
     };
-
+    
     merge(other : List):SELF_TYPE {
         self (* TODO *)
     };
