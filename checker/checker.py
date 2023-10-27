@@ -27,6 +27,7 @@ def correctSeparator(pline : str):
 def lineByLine(proc, tname):
     with open(f"refs/{tname}.txt", "r") as f:
         for i, line in enumerate(f, start=1):
+            print(i)
             pline = proc.stdout.readline().decode("UTF-8")
 
             if line != pline and line != correctSeparator(pline):

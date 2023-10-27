@@ -82,14 +82,14 @@ Sergent
 Officer
 *)
                     case aux of
-                        p : Product => {result <-(result.concat(", ").concat(p.toString()));};
+                        p : Product => {result <-(result.concat(", ").concat(p .toString()));};
                         p1 : Edible => {result <-(result.concat(", ").concat(p1.toString()));};
                         p2 : Soda => {result <-  (result.concat(", ").concat(p2.toString()));};
                         p3: Coffee => {result <- (result.concat(", ").concat(p3.toString()));};
                         p4 : Laptop => {result <-(result.concat(", ").concat(p4.toString()));};
                         p5 : Router => {result <-(result.concat(", ").concat(p5.toString()));};
 
-                        r : Rank => {   result <-(     result.concat(", ").concat(r.toString()));};
+                        r : Rank => {   result <-(     result.concat(", ").concat(r .toString()));};
                         r1 : Private => {   result <- (result.concat(", ").concat(r1.toString()));}; 
                         r2 : Corporal => {   result <-(result.concat(", ").concat(r2.toString()));}; 
                         r3: Sergent => {   result <-  (result.concat(", ").concat(r3.toString()));}; 
@@ -97,6 +97,7 @@ Officer
 
 
                         s : String  => { result <- result.concat(", String").concat("(").concat(s).concat(")");};
+                        
                         o : Object  => { abort(); ""; };
                     esac;
                 }

@@ -134,7 +134,34 @@ class Main inherits IO{
     number:Int<- 12;
 
     main():Object {
+        {
+        let input:String <- "?",
+                    input_list:List,
+                    void:List
+                     in
+                    { 
+                        loopingLoad <- true;  
+                    while (loopingLoad) loop {
+                        input <- in_string();
+                        if (not (input = "END")) then 
+                        {                           
+                            let mylist:List,
+                                token:Token <- new Token ,
+                                command : List
+                                in{
+                                    mylist <- token.getTokenList( input );
+                                    --out_string(mylist.toString());
+                                    load(mylist);
+                                };
+                        } 
+                        else { loopingLoad <- false; } fi;
+                        }pool;
+                        listsLength <- listsLength + 1;
+                        --print(1);
+                    }; 
+
         while looping loop {
+            
             somestr <- in_string();
             if(somestr = "test") then
             {
@@ -155,7 +182,7 @@ class Main inherits IO{
                         --out_string(elem.toString());
 
                 };
-                out_string("\n---");
+                --out_string("\n---");
                 out_string("---");
                 }
                 else 0
@@ -203,7 +230,9 @@ class Main inherits IO{
                 print(1);
             } else 0 fi;
 
-            } pool
+            } pool;
+
+    }    
     };
 
     load(cmd : List) : Object {   -- cate o linie
@@ -269,9 +298,9 @@ class Main inherits IO{
                 if(type = "Laptop")  then { sumProductType <- sumProductType+1; } else 0 fi;
                 if(type = "Router")  then { sumProductType <- sumProductType+1; } else 0 fi;
                 if(type = "Coffee")  then { sumProductType <- sumProductType+1; } else 0 fi;
-                out_string("\n sumProductType : ").out_int(sumProductType).out_string("\n");
+                --out_string("\n sumProductType : ").out_int(sumProductType).out_string("\n");
                 if(not sumProductType = 0) then { --if it's a product of any kind
-                    out_string("\n ???????????????? \n");
+                    --out_string("\n ???????????????? \n");
                     cmd <- cmd.extractNext();
                     aux <- cmd.getContent(); 
                     case aux of
