@@ -102,8 +102,65 @@ class List inherits IO{
     
     merge(other : List):SELF_TYPE {
     {
-        
+        --out_string("\nAM INTRAT IN MERGE\n");
+        let count:Int ,
+        cpy:List <- self,
+        cpy2:List <- self
+        in{
+            while( not isvoid cpy.extractNext() ) loop{
+                cpy <- cpy.extractNext();
+                --out_string("infit?\n");
+
+            } pool;
+            --cpy.setNext(other);
+            --out_string("inainte: ").out_string(cpy2.toString());
+
+            if( not isvoid other ) then{
+                cpy.setNext(other);
+            } 
+            else {abort();"";} fi;
+
+            --out_string("dupa ").out_string(cpy2.toString());
+        };
+
+        -- if( not isvoid other ) then{
+        -- setNext(other);
+        -- } else {abort();"";} fi;
+        --out_string("\nAM iesit din MERGE\n");
         self;
+    }
+    };
+
+
+
+    extractRemoveElement(index : Int):Object{
+    {
+        --out_string("\nAM INTRAT IN extractRemoveElement \n");
+        let aux:Object,
+        cpy:List <- self,
+        lastElement :List,
+        null : List,
+        count:Int <- 1 ,
+        result: Object
+        in{
+            while(not isvoid cpy) loop{          
+                if( count = index ) then { 
+
+
+                    result <- cpy.getContent();
+                    if(not isvoid lastElement) then { lastElement.setNext( cpy.extractNext() ); } else 0 fi;
+                    cpy <- null;
+                    } else {
+                    lastElement <- cpy;
+                    cpy <- cpy.extractNext();
+                    } fi;  
+                count <- count+1;
+            }pool;
+
+            -- if(not isvoid lastElement) then { lastElement.setNext(null); } else 0 fi;
+            if(isvoid result) then {out_string("\n NU E VOIE !!!!!!!!!!!!! \n");} else 0 fi;
+            result;
+        };
     }
     };
 
