@@ -17,7 +17,7 @@ class Product {
 
     toString():String {
         --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(";").concat((new A2I).i2a_aux(price).concat(")"))
-        self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
+        (self.type_name()).concat("(").concat(name).concat(";").concat(model).concat(")")
     };
 };
 
@@ -72,3 +72,8 @@ class Sergent inherits Corporal {};
 
 class Officer inherits Sergent {};
 
+class Empty {
+    toString():String{
+        ""
+    };
+};

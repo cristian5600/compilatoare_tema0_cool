@@ -72,3 +72,8 @@ class Sergent inherits Corporal {};
 
 class Officer inherits Sergent {};
 
+class Empty {
+    toString():String{
+        ""
+    };
+};

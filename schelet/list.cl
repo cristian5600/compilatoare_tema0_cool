@@ -29,6 +29,9 @@ class List inherits IO{
         elem;
         }
     };
+    setContent(o:Object):Object{
+        elem <-o
+    };
     add(obj : Object):SELF_TYPE {
         let null:List,
             coppy:List <- self,
@@ -61,6 +64,7 @@ class List inherits IO{
                         p : Product => {result <- result.concat(p.toString());};  
                         r : Rank => {   result <- result.concat(r.toString());};        
                         s : String => {  result <- result.concat("String").concat("(").concat(s).concat(")"); };  --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
+                        e : Empty => { 1=1; };
                         o : Object  => { abort(); "";};
                 esac;
                 while ( not (isvoid coppy.extractNext()) ) loop
@@ -137,28 +141,59 @@ class List inherits IO{
     {
         --out_string("\nAM INTRAT IN extractRemoveElement \n");
         let aux:Object,
+        auxList:List,
         cpy:List <- self,
         lastElement :List,
         null : List,
         count:Int <- 1 ,
-        result: Object
+        result: Object 
+
         in{
-            while(not isvoid cpy) loop{          
+            while(not isvoid cpy) loop{   
+
                 if( count = index ) then { 
-
-
                     result <- cpy.getContent();
-                    if(not isvoid lastElement) then { lastElement.setNext( cpy.extractNext() ); } else 0 fi;
+
+                    if(not isvoid lastElement) then {
+                         lastElement.setNext( cpy.extractNext() ); 
+                    } else 0 fi;
                     cpy <- null;
-                    } else {
+                } 
+                else {
                     lastElement <- cpy;
                     cpy <- cpy.extractNext();
-                    } fi;  
+                } fi;  
+
+                if(index = 1) then {
+                    -- out_string("CEVA DUBIOS\n ");
+
+
+                    result <- self.getContent();
+                    auxList <- self;
+                    auxList <- auxList.extractNext();
+                    aux <- auxList;
+                    if (isvoid aux ) then 
+                    { 
+                        self.setNext(null);
+                        self.setContent(new Empty);
+                    }
+                    else  
+                    {
+                        self.setNext(auxList.extractNext());
+                        self.setContent(auxList.getContent());
+                    } fi;
+
+
+                    
+                    cpy <- null;
+                } else 0 fi;
+
                 count <- count+1;
             }pool;
 
             -- if(not isvoid lastElement) then { lastElement.setNext(null); } else 0 fi;
-            if(isvoid result) then {out_string("\n NU E VOIE !!!!!!!!!!!!! \n");} else 0 fi;
+            if(isvoid result) then {out_string("\n NU E VOIE SA EXTRAGI VOID!!!!!!!!!!!!! \n");} else 0 fi;
+            
             result;
         };
     }

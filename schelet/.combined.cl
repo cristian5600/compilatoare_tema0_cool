@@ -1,4 +1,101 @@
-class List inherits IO{
+(*  
+    ProductFilter - elimin ̆a din list ̆a obiecte ce nu mostenesc Product
+    RankFilter - elimin ̆a din list ̆a obiecte ce nu mos,tenesc Rank
+*)
+class ProductFilter inherits IO{
+    filterList(list : List):Object{
+        let index:Int<- 1,  
+        cpy:List <- list,
+        last:List,
+        aux :Object,
+        looping:Bool <- true,
+        foundBad:Bool <- false,
+        null:List
+
+        in {
+            while( not isvoid cpy ) loop{
+
+                aux <- cpy.getContent();
+                
+                case aux of
+                    p:Product => { 
+                        if(foundBad = false) then {index<-index+1;} else 0 fi;
+                        foundBad <- false;
+                        last <- cpy;
+                        cpy <- cpy.extractNext(); 
+                    };
+                    o:Object => { 
+                        out_string("help");
+                        
+                        foundBad <- true;
+                        list.extractRemoveElement(index);
+
+                        if(isvoid last) then { 
+                            aux <- list.getContent();
+                            case aux of
+                                e : Empty => { cpy <- null; };
+                                o : Object => { cpy<- list; };
+                            esac;
+
+                            
+                            foundBad <- false; 
+                        } else { cpy<-last; }fi;
+
+                    };
+                esac;
+                if(10 < index) then {abort();"";} else 0 fi;
+            }pool;
+        }
+    };
+};
+
+
+class RankFilter inherits IO{
+    filterList(list : List):Object{
+        let index:Int<- 1,  
+        cpy:List <- list,
+        last:List,
+        aux :Object,
+        looping:Bool <- true,
+        foundBad:Bool <- false,
+        null : List
+
+        in {
+            while( not isvoid cpy ) loop{
+
+                aux <- cpy.getContent();
+                
+                case aux of
+                    r:Rank => { 
+                        if(foundBad = false) then {index<-index+1;} else 0 fi;
+                        foundBad <- false;
+                        last <- cpy;
+                        cpy <- cpy.extractNext(); 
+                    };
+                    o:Object => { 
+                        
+                        foundBad <- true;
+                        list.extractRemoveElement(index);
+
+                        --if(isvoid last) then { cpy<list; foundBad <- false; } else { cpy<-last; }fi;
+                        if(isvoid last) then { 
+                            aux <- list.getContent();
+                            case aux of
+                                e : Empty => {  cpy <- null; };
+                                o : Object => { cpy<- list; };
+                            esac;
+
+                            
+                            foundBad <- false; 
+                        } else { cpy<-last; }fi;
+
+                    };
+                esac;
+                --if(10 < index) then {abort();"";} else 0 fi;
+            }pool;
+        }
+    };
+};class List inherits IO{
 
     (* TODO: store data *)
     elem : Object;
@@ -28,6 +125,9 @@ class List inherits IO{
         {
         elem;
         }
+    };
+    setContent(o:Object):Object{
+        elem <-o
     };
     add(obj : Object):SELF_TYPE {
         let null:List,
@@ -61,6 +161,7 @@ class List inherits IO{
                         p : Product => {result <- result.concat(p.toString());};  
                         r : Rank => {   result <- result.concat(r.toString());};        
                         s : String => {  result <- result.concat("String").concat("(").concat(s).concat(")"); };  --self.type_name().concat("(").concat(name).concat(";").concat(model).concat(")")
+                        e : Empty => { 1=1; };
                         o : Object  => { abort(); "";};
                 esac;
                 while ( not (isvoid coppy.extractNext()) ) loop
@@ -137,28 +238,59 @@ class List inherits IO{
     {
         --out_string("\nAM INTRAT IN extractRemoveElement \n");
         let aux:Object,
+        auxList:List,
         cpy:List <- self,
         lastElement :List,
         null : List,
         count:Int <- 1 ,
-        result: Object
+        result: Object 
+
         in{
-            while(not isvoid cpy) loop{          
+            while(not isvoid cpy) loop{   
+
                 if( count = index ) then { 
-
-
                     result <- cpy.getContent();
-                    if(not isvoid lastElement) then { lastElement.setNext( cpy.extractNext() ); } else 0 fi;
+
+                    if(not isvoid lastElement) then {
+                         lastElement.setNext( cpy.extractNext() ); 
+                    } else 0 fi;
                     cpy <- null;
-                    } else {
+                } 
+                else {
                     lastElement <- cpy;
                     cpy <- cpy.extractNext();
-                    } fi;  
+                } fi;  
+
+                if(index = 1) then {
+                    -- out_string("CEVA DUBIOS\n ");
+
+
+                    result <- self.getContent();
+                    auxList <- self;
+                    auxList <- auxList.extractNext();
+                    aux <- auxList;
+                    if (isvoid aux ) then 
+                    { 
+                        self.setNext(null);
+                        self.setContent(new Empty);
+                    }
+                    else  
+                    {
+                        self.setNext(auxList.extractNext());
+                        self.setContent(auxList.getContent());
+                    } fi;
+
+
+                    
+                    cpy <- null;
+                } else 0 fi;
+
                 count <- count+1;
             }pool;
 
             -- if(not isvoid lastElement) then { lastElement.setNext(null); } else 0 fi;
-            if(isvoid result) then {out_string("\n NU E VOIE !!!!!!!!!!!!! \n");} else 0 fi;
+            if(isvoid result) then {out_string("\n NU E VOIE SA EXTRAGI VOID!!!!!!!!!!!!! \n");} else 0 fi;
+            
             result;
         };
     }
@@ -238,20 +370,20 @@ class Main inherits IO{
                 let null : List,
                     elem:List <- new List,
                     aux : Object in{
-                        elem.init((new Product).init("a","b",3),null);
-                        elem.add((new Soda).init("c","d",67));
-                        elem.add((new Coffee).init("e","f",632));
-                        elem.add((new Laptop).init("g","h",4545));
-                        elem.add((new Router).init("cads","dsd",2167));
-                        elem.add((new Rank).init("marinescu")); --SELF_TYPE necesitate la init
-                        elem.add(2);
-                        aux <- (new Corporal).init("ciobotaru");
+                        elem.init((new Rank).init("marinescu"),null);
+                        elem.add((new Private).init("Abc"));
                         
+                        out_string(elem.toString()).out_string("\n");
+                        new ProductFilter.filterList(elem);
+                        -- elem.extractRemoveElement(1);
+                        -- elem.extractRemoveElement(1);
+
                         out_string(elem.toString());
+                        
 
                 };
                 --out_string("\n---");
-                out_string("---");
+                out_string("\n");
                 }
                 else 0
                 fi;               
@@ -310,7 +442,8 @@ class Main inherits IO{
 
                 let cpy : List <- lists ,
                 toAdd:List,
-                count : Int <- 0
+                count : Int <- 0,
+                null:List
                 in{
                     aux <- lists.extractRemoveElement(arg2_merge);
                     listsLength <- listsLength-1;
@@ -328,13 +461,23 @@ class Main inherits IO{
                                 l : List => { l.merge(toAdd); };
                                 o:Object => {abort(); " ";};
                             esac;
-                            aux <- lists.extractRemoveElement(arg1_merge);
-                            --lists.add(aux)
-                            case aux of 
-                                l : List => { lists.add(l) ; };
-                                o:Object => {abort(); " ";};
-                            esac;
-                            1=1;
+                            -- if (arg1_merge = 1) then{
+                            --     if(isnull lists.extractNext() ) then{
+                            --        1=1; 
+
+
+                            --     } else 0 fi;
+                            -- }else 0 fi;
+
+                            if(not isvoid lists.extractNext()) then --daca este doar un element nu mai trebuie facut nimic
+                            {
+                                aux <- lists.extractRemoveElement(arg1_merge);
+                                case aux of 
+                                    l : List => {  lists.add(l) ;};
+                                    o:Object => {abort(); " ";};
+                                esac;
+                            }
+                            else 0 fi;
 
                         }else{
                             cpy <- cpy.extractNext();
@@ -347,6 +490,54 @@ class Main inherits IO{
 
 
 
+            } else 0 fi;
+
+(*  *****************************************************
+    ***************  FilterBy  ***************************** *
+    *****************************************************  *)
+
+            if(somestr = "filterBy")then {
+                let index:Int,
+                option:String,
+                count:Int<-1,
+                cpy:List <- lists 
+                in{
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent();
+                    case aux of 
+                        s :String => { index <- new A2I.a2i_aux(s); };
+                        o :Object => {abort();"";};
+                    esac;
+
+                    
+                    while(count < index) loop{
+                        cpy <- cpy.extractNext();
+                        count <- count+1;
+                    }pool;
+
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent();
+                    case aux of 
+                        s :String => { option <- s ;};
+                        o :Object => {abort();"";};
+                    esac;
+                    if(option="ProductFilter") then {
+                        aux <- cpy.getContent();
+                        case aux of
+                            l:List => { new ProductFilter.filterList(l); };
+                            o:Object => {abort();};
+                        esac;
+                    }else 0 fi;
+                    if(option="RankFilter") then {
+                        aux <- cpy.getContent();
+                        case aux of
+                            l:List => { new RankFilter.filterList(l); };
+                            o:Object => {abort();};
+                        esac;
+                    }else 0 fi;
+
+                };
+            
             } else 0 fi;
 
             if(somestr = "print")then {
@@ -629,7 +820,7 @@ class Main inherits IO{
                     count <- count + 1;
                 } pool;
 
-                if ( 1 < listsLength ) then {out_int(count).out_string(": ");} else 0 fi;
+                --if ( 1 < listsLength ) then {out_int(count).out_string(": ");} else 0 fi;
 
                 aux <- cpy.getContent();
 
@@ -720,6 +911,11 @@ class Sergent inherits Corporal {};
 
 class Officer inherits Sergent {};
 
+class Empty {
+    toString():String{
+        ""
+    };
+};
 Class Token inherits IO{
 
     whereSpace(str:String):Int{

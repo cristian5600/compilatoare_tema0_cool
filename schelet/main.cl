@@ -63,20 +63,20 @@ class Main inherits IO{
                 let null : List,
                     elem:List <- new List,
                     aux : Object in{
-                        elem.init((new Product).init("a","b",3),null);
-                        elem.add((new Soda).init("c","d",67));
-                        elem.add((new Coffee).init("e","f",632));
-                        elem.add((new Laptop).init("g","h",4545));
-                        elem.add((new Router).init("cads","dsd",2167));
-                        elem.add((new Rank).init("marinescu")); --SELF_TYPE necesitate la init
-                        elem.add(2);
-                        aux <- (new Corporal).init("ciobotaru");
+                        elem.init((new Rank).init("marinescu"),null);
+                        elem.add((new Private).init("Abc"));
                         
+                        out_string(elem.toString()).out_string("\n");
+                        new ProductFilter.filterList(elem);
+                        -- elem.extractRemoveElement(1);
+                        -- elem.extractRemoveElement(1);
+
                         out_string(elem.toString());
+                        
 
                 };
                 --out_string("\n---");
-                out_string("---");
+                out_string("\n");
                 }
                 else 0
                 fi;               
@@ -135,7 +135,8 @@ class Main inherits IO{
 
                 let cpy : List <- lists ,
                 toAdd:List,
-                count : Int <- 0
+                count : Int <- 0,
+                null:List
                 in{
                     aux <- lists.extractRemoveElement(arg2_merge);
                     listsLength <- listsLength-1;
@@ -153,13 +154,23 @@ class Main inherits IO{
                                 l : List => { l.merge(toAdd); };
                                 o:Object => {abort(); " ";};
                             esac;
-                            aux <- lists.extractRemoveElement(arg1_merge);
-                            --lists.add(aux)
-                            case aux of 
-                                l : List => { lists.add(l) ; };
-                                o:Object => {abort(); " ";};
-                            esac;
-                            1=1;
+                            -- if (arg1_merge = 1) then{
+                            --     if(isnull lists.extractNext() ) then{
+                            --        1=1; 
+
+
+                            --     } else 0 fi;
+                            -- }else 0 fi;
+
+                            if(not isvoid lists.extractNext()) then --daca este doar un element nu mai trebuie facut nimic
+                            {
+                                aux <- lists.extractRemoveElement(arg1_merge);
+                                case aux of 
+                                    l : List => {  lists.add(l) ;};
+                                    o:Object => {abort(); " ";};
+                                esac;
+                            }
+                            else 0 fi;
 
                         }else{
                             cpy <- cpy.extractNext();
@@ -172,6 +183,54 @@ class Main inherits IO{
 
 
 
+            } else 0 fi;
+
+(*  *****************************************************
+    ***************  FilterBy  ***************************** *
+    *****************************************************  *)
+
+            if(somestr = "filterBy")then {
+                let index:Int,
+                option:String,
+                count:Int<-1,
+                cpy:List <- lists 
+                in{
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent();
+                    case aux of 
+                        s :String => { index <- new A2I.a2i_aux(s); };
+                        o :Object => {abort();"";};
+                    esac;
+
+                    
+                    while(count < index) loop{
+                        cpy <- cpy.extractNext();
+                        count <- count+1;
+                    }pool;
+
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent();
+                    case aux of 
+                        s :String => { option <- s ;};
+                        o :Object => {abort();"";};
+                    esac;
+                    if(option="ProductFilter") then {
+                        aux <- cpy.getContent();
+                        case aux of
+                            l:List => { new ProductFilter.filterList(l); };
+                            o:Object => {abort();};
+                        esac;
+                    }else 0 fi;
+                    if(option="RankFilter") then {
+                        aux <- cpy.getContent();
+                        case aux of
+                            l:List => { new RankFilter.filterList(l); };
+                            o:Object => {abort();};
+                        esac;
+                    }else 0 fi;
+
+                };
+            
             } else 0 fi;
 
             if(somestr = "print")then {
