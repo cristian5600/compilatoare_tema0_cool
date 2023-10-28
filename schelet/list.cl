@@ -68,19 +68,6 @@ class List inherits IO{
                     coppy <- coppy.extractNext();
                     --out_string("AM INTRAT in lista\n");
                     aux <- coppy.getContent();
-                    (*
-Product
-Edible
-Soda 
-Coffee
-Laptop 
-Router
-Rank
-Private
-Corporal
-Sergent
-Officer
-*)
                     case aux of
                         p : Product => {result <-(result.concat(", ").concat(p .toString()));};
                         p1 : Edible => {result <-(result.concat(", ").concat(p1.toString()));};
@@ -95,9 +82,12 @@ Officer
                         r3: Sergent => {   result <-  (result.concat(", ").concat(r3.toString()));}; 
                         r4 : Officer => {   result <- (result.concat(", ").concat(r4.toString()));}; 
 
-
+                        i : Int => { result <- result.concat(", Int").concat("(").concat(new A2I.i2a_aux(i)).concat(")"); };
                         s : String  => { result <- result.concat(", String").concat("(").concat(s).concat(")");};
-                        
+                        b : Bool => { result <- result.concat(", Bool").concat("(").concat(
+                            if(b = true) then "true" else "false" fi
+                        ).concat(")"); };
+                        io : IO => { result <- result.concat(", IO").concat("(").concat(")"); };
                         o : Object  => { abort(); ""; };
                     esac;
                 }
@@ -111,7 +101,10 @@ Officer
     };
     
     merge(other : List):SELF_TYPE {
-        self (* TODO *)
+    {
+        
+        self;
+    }
     };
 
     filterBy():SELF_TYPE {

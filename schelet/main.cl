@@ -8,10 +8,12 @@ class Main inherits IO{
     aux: Object;
     auxi: Object;
     number:Int<- 12;
+    cmd: List;
 
     main():Object {
         {
-        let input:String <- "?",
+
+        let input:String <- "?",    -- SE FACE UN LOAD()
                     input_list:List,
                     void:List
                      in
@@ -39,6 +41,18 @@ class Main inherits IO{
         while looping loop {
             
             somestr <- in_string();
+
+            if (not somestr = "") then { 
+                cmd <- new Token.getTokenList(somestr);
+                aux <- cmd.getContent();
+                case aux of 
+                    s : String => { somestr <- s ;};
+                    o : Object => {  abort(); " ";};
+                esac;
+             }
+             else 0 fi;
+
+            
             if(somestr = "test") then
             {
                 if (isvoid null) then
@@ -52,10 +66,10 @@ class Main inherits IO{
                         elem.add((new Laptop).init("g","h",4545));
                         elem.add((new Router).init("cads","dsd",2167));
                         elem.add((new Rank).init("marinescu")); --SELF_TYPE necesitate la init
-                        elem.add((new Corporal).init("ciobotaru"));
+                        elem.add(2);
                         aux <- (new Corporal).init("ciobotaru");
                         
-                        --out_string(elem.toString());
+                        out_string(elem.toString());
 
                 };
                 --out_string("\n---");
@@ -122,6 +136,7 @@ class Main inherits IO{
             arg1_str:String,
             arg2_str:String,
             arg3_int:Int,
+            arg4_bool:Bool,
             aux:Object,
             sumProductType:Int <- 0,
             sumRankType:Int <- 0
@@ -139,6 +154,78 @@ class Main inherits IO{
                     s : String => { type <- s ;};
                     o : Object => { abort(); ""; };
                 esac;
+                if(type = "IO") then {
+                    cmd <- cmd.extractNext();
+                    -- aux <- cmd.getContent(); 
+                    -- case aux of
+                    --     s : String => { arg4_bool <- if(s = "true") then true else false fi ;};
+                    --     o : Object => { abort(); "";};
+                    -- esac;
+                        if( isvoid cpy ) then{
+                            cpy <- (new List).init(
+                                (new List).init(new IO,null)
+                                ,null);
+                                --out_string("\nam initializat lista\n");
+                                if (isvoid lists ) then {lists <- cpy;} else {
+                                    lists.add((new List).init(new IO,null));
+                                }fi;
+                            } else {
+                                aux <- cpy.getContent();
+                                case aux of 
+                                    l : List => { l.add(new IO); };
+                                    o : Object => { abort(); "";};
+                                esac;
+                                --out_string("\nam adaugat in lista cu .add \n");
+                            } fi;
+                } else 0 fi;
+                if(type = "Bool") then {
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent(); 
+                    case aux of
+                        s : String => { arg4_bool <- if(s = "true") then true else false fi ;};
+                        o : Object => { abort(); "";};
+                    esac;
+                        if( isvoid cpy ) then{
+                            cpy <- (new List).init(
+                                (new List).init(arg4_bool,null)
+                                ,null);
+                                --out_string("\nam initializat lista\n");
+                                if (isvoid lists ) then {lists <- cpy;} else {
+                                    lists.add((new List).init(arg4_bool,null));
+                                }fi;
+                            } else {
+                                aux <- cpy.getContent();
+                                case aux of 
+                                    l : List => { l.add(arg4_bool); };
+                                    o : Object => { abort(); "";};
+                                esac;
+                                --out_string("\nam adaugat in lista cu .add \n");
+                            } fi;
+                } else 0 fi;
+                if(type = "Int") then {
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent(); 
+                    case aux of
+                        s : String => { arg3_int <- new A2I.a2i_aux(s) ;};
+                        o : Object => { abort(); "";};
+                    esac;
+                        if( isvoid cpy ) then{
+                            cpy <- (new List).init(
+                                (new List).init(arg3_int,null)
+                                ,null);
+                                --out_string("\nam initializat lista\n");
+                                if (isvoid lists ) then {lists <- cpy;} else {
+                                    lists.add((new List).init(arg3_int,null));
+                                }fi;
+                            } else {
+                                aux <- cpy.getContent();
+                                case aux of 
+                                    l : List => { l.add(arg3_int); };
+                                    o : Object => { abort(); "";};
+                                esac;
+                                --out_string("\nam adaugat in lista cu .add \n");
+                            } fi;
+                } else 0 fi;
 
                 if(type = "String") then {
                     cmd <- cmd.extractNext();
