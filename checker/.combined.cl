@@ -524,7 +524,6 @@ class Main inherits IO{
     null : List;
     aux: Object;
     auxi: Object;
-    number:Int<- 12;
     cmd: List;
     arg1_merge:Int;
     arg2_merge:Int;
@@ -537,19 +536,18 @@ class Main inherits IO{
                      in
                     { 
                         loopingLoad <- true;  
-                    while (loopingLoad) loop {
-                        input <- in_string();
-                        if (not (input = "END")) then 
-                        {                           
-                            let mylist:List,
-                                token:Token <- new Token ,
-                                command : List
-                                in{
-                                    mylist <- token.getTokenList( input );
-                                    --out_string(mylist.toString());
-                                    load(mylist);
-                                };
-                        } 
+                        while (loopingLoad) loop {
+                            input <- in_string();
+                            if (not (input = "END")) then 
+                            {                           
+                                let mylist:List,
+                                    token:Token <- new Token ,
+                                    command : List
+                                    in{
+                                        mylist <- token.getTokenList( input );
+                                        load(mylist);
+                                    };
+                            } 
                         else { loopingLoad <- false; } fi;
                         }pool;
                         listsLength <- listsLength + 1;
@@ -557,7 +555,6 @@ class Main inherits IO{
                     }; 
 
         while looping loop {
-            --cmd <- null;
             somestr <- in_string();
             
 
@@ -571,7 +568,6 @@ class Main inherits IO{
                 esac;
              }
              else 0 fi;
-            --out_string("\n comanda este:").out_string(cmd.toString()).out_string("\n");
             
             if(somestr = "test") then
             {
