@@ -13,41 +13,34 @@ class List inherits IO{
     };
 
     extractNext() : List{
-        {
-        next;
-        }
+        next
     };
+
     setNext(l:List) : List{
-        {
-            --out_string("am setat next??\n");
-            next <- l;
-        --self;
-        }
+        next <- l
     };
     getContent() : Object {
-        {
-        elem;
-        }
+        elem
     };
     setContent(o:Object):Object{
         elem <-o
     };
     add(obj : Object):SELF_TYPE {
         let null:List,
-            coppy:List <- self,
-            aux : List <- new List.init(obj,null)  
-                in 
-                {
-                    coppy.setNext(self.extractNext());
-                    while ( not (isvoid coppy.extractNext()) ) loop
-                    {
-                        coppy <- coppy.extractNext();
-                    }
-                    pool;  
-                    coppy.setNext(aux);
-                    self;
-                }
-         
+        coppy:List <- self,
+        aux : List <- new List.init(obj,null)  
+        in 
+        {
+            coppy.setNext(self.extractNext());
+            while ( not (isvoid coppy.extractNext()) ) loop
+            {
+                coppy <- coppy.extractNext();
+            }
+            pool;  
+
+            coppy.setNext(aux);
+            self;
+        }
     };
 
     toString():String {
@@ -55,11 +48,9 @@ class List inherits IO{
             null:List,
             aux:Object,
             count:Int <-0,
-            result:String <- "[ " in --self.getContent().type_name() in 
+            result:String <- "[ " in 
             {
-                
                 aux <- coppy.getContent();
-                --out_string(aux.type_name());
                 case aux of
                         p : Product => {result <- result.concat(p.toString());};  
                         r : Rank => {   result <- result.concat(r.toString());};        
@@ -70,7 +61,6 @@ class List inherits IO{
                 while ( not (isvoid coppy.extractNext()) ) loop
                 {
                     coppy <- coppy.extractNext();
-                    --out_string("AM INTRAT in lista\n");
                     aux <- coppy.getContent();
                     case aux of
                         p : Product => {result <-(result.concat(", ").concat(p .toString()));};
@@ -96,8 +86,6 @@ class List inherits IO{
                     esac;
                 }
                 pool;
-                --out_string(result);
-                --result.concat(")");
                 result <- result.concat(" ]");
                 result;
             }

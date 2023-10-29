@@ -43,13 +43,13 @@ class ProductFilter inherits Filter{
                                 o : Object => { cpy<- list; };
                             esac;
 
-                            
                             foundBad <- false; 
                         } else { cpy<-last; }fi;
 
                     };
                 esac;
                 if(10 < index) then {abort();"";} else 0 fi;
+
             }pool;
             result;
         }
@@ -64,10 +64,8 @@ class RankFilter inherits Filter{
         last:List,
         aux :Object,
         result:Bool<-true,
-        looping:Bool <- true,
         foundBad:Bool <- false,
         null : List
-
         in {
             case o of
                 l:List => {cpy <- l;list <- l;};
@@ -75,9 +73,7 @@ class RankFilter inherits Filter{
             esac;
 
             while( not isvoid cpy ) loop{
-
                 aux <- cpy.getContent();
-                
                 case aux of
                     r:Rank => { 
                         if(foundBad = false) then {index<-index+1;} else 0 fi;
@@ -96,13 +92,12 @@ class RankFilter inherits Filter{
                                 o : Object => { cpy<- list; };
                             esac;
 
-                            
                             foundBad <- false; 
                         } else { cpy<-last; }fi;
-
                     };
                 esac;
             }pool;
+
             result;
         }
     };
@@ -115,7 +110,6 @@ class SamePriceFilter inherits Filter{
         last:List,
         aux :Object,
         result:Bool<-true,
-        looping:Bool <- true,
         foundBad:Bool <- false,
         null : List,
         priceAsProduct:Int,
@@ -125,7 +119,7 @@ class SamePriceFilter inherits Filter{
                 l:List => {cpy <- l;new ProductFilter.filter(l);list<-l;};
                 o:Object =>{abort();"";};
             esac;
-            --new ProductFilter.filter(list);
+            
             while( not isvoid cpy ) loop{
                 aux <- cpy.getContent();
                 case aux of 
