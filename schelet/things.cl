@@ -48,6 +48,9 @@ class Router inherits Product {};
  ****************************)
 class Rank {
     name : String;
+    getContent():String {
+        name
+    };
 
     init(n : String):SELF_TYPE {
         {

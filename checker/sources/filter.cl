@@ -1,18 +1,25 @@
-(*  
-    ProductFilter - elimin ̆a din list ̆a obiecte ce nu mostenesc Product
-    RankFilter - elimin ̆a din list ̆a obiecte ce nu mos,tenesc Rank
-*)
-class ProductFilter inherits IO{
-    filterList(list : List):Object{
+class Filter inherits IO{
+    filter(o : Object):Bool {true}; -- returnes true if it filtered something out
+};
+
+class ProductFilter inherits Filter{
+    filter(o : Object):Bool{
         let index:Int<- 1,  
-        cpy:List <- list,
+        cpy:List,
+        list:List,
         last:List,
         aux :Object,
         looping:Bool <- true,
+        result:Bool <- false,
         foundBad:Bool <- false,
         null:List
 
         in {
+            case o of
+                l:List => {cpy <- l;list <- l;};
+                o:Object =>{abort();"";};
+            esac;
+
             while( not isvoid cpy ) loop{
 
                 aux <- cpy.getContent();
@@ -25,8 +32,7 @@ class ProductFilter inherits IO{
                         cpy <- cpy.extractNext(); 
                     };
                     o:Object => { 
-                        --out_string("help");
-                        
+                        result <- false;
                         foundBad <- true;
                         list.extractRemoveElement(index);
 
@@ -45,22 +51,29 @@ class ProductFilter inherits IO{
                 esac;
                 if(10 < index) then {abort();"";} else 0 fi;
             }pool;
+            result;
         }
     };
 };
 
-
-class RankFilter inherits IO{
-    filterList(list : List):Object{
+class RankFilter inherits Filter{
+    filter(o : Object):Bool{
         let index:Int<- 1,  
-        cpy:List <- list,
+        cpy:List,
+        list:List,
         last:List,
         aux :Object,
+        result:Bool<-true,
         looping:Bool <- true,
         foundBad:Bool <- false,
         null : List
 
         in {
+            case o of
+                l:List => {cpy <- l;list <- l;};
+                o:Object =>{abort();"";};
+            esac;
+
             while( not isvoid cpy ) loop{
 
                 aux <- cpy.getContent();
@@ -73,11 +86,9 @@ class RankFilter inherits IO{
                         cpy <- cpy.extractNext(); 
                     };
                     o:Object => { 
-                        
+                        result <- false;
                         foundBad <- true;
                         list.extractRemoveElement(index);
-
-                        --if(isvoid last) then { cpy<list; foundBad <- false; } else { cpy<-last; }fi;
                         if(isvoid last) then { 
                             aux <- list.getContent();
                             case aux of
@@ -91,25 +102,30 @@ class RankFilter inherits IO{
 
                     };
                 esac;
-                --if(10 < index) then {abort();"";} else 0 fi;
             }pool;
+            result;
         }
     };
 };
-
-class SamePriceFilter inherits IO{
-    filterList(list : List):Object{
+class SamePriceFilter inherits Filter{
+    filter(o : Object):Bool{
         let index:Int<- 1,  
-        cpy:List <- list,
+        cpy:List,
+        list:List,
         last:List,
         aux :Object,
+        result:Bool<-true,
         looping:Bool <- true,
         foundBad:Bool <- false,
         null : List,
         priceAsProduct:Int,
         price:Int
         in {
-            new ProductFilter.filterList(list);
+            case o of
+                l:List => {cpy <- l;new ProductFilter.filter(l);list<-l;};
+                o:Object =>{abort();"";};
+            esac;
+            --new ProductFilter.filter(list);
             while( not isvoid cpy ) loop{
                 aux <- cpy.getContent();
                 case aux of 
@@ -134,6 +150,7 @@ class SamePriceFilter inherits IO{
                         last <- cpy;
                         cpy <- cpy.extractNext(); 
                 }else{
+                    result <- false;
                      foundBad <- true;
                         list.extractRemoveElement(index);
                         if(isvoid last) then { 
@@ -146,6 +163,8 @@ class SamePriceFilter inherits IO{
                         } else { cpy<-last; }fi;
                 } fi; 
             }pool;
+            result;
         }
     };
 };
+    

@@ -1,7 +1,3 @@
-(* Think of these as abstract classes *)
-class Comparator {
-    compareTo(o1 : Object, o2 : Object):Int {0};
-};
 (* TODO: implement specified comparators and filters*)
 
 class A2I {

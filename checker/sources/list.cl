@@ -198,13 +198,64 @@ class List inherits IO{
         };
     }
     };
+(*void selectionSort(node* head) 
+{ 
+    node* temp = head; 
+  
+    // Traverse the List 
+    while (temp) { 
+        node* min = temp; 
+        node* r = temp->next; 
+  
+        // Traverse the unsorted sublist 
+        while (r) { 
+            if (min->data > r->data) 
+                min = r; 
+  
+            r = r->next; 
+        } 
+  
+        // Swap Data 
+        int x = temp->data; 
+        temp->data = min->data; 
+        min->data = x; 
+        temp = temp->next; 
+    } 
+} *)
+    sortBy(cmp:Comparator, option:String):SELF_TYPE {
+        let aux:Object ,
+        cpy:List,
+        temp:List,
+        min:List,
+        r:List,
+        cmp_result:Int
+        in{
+            --out_string("tipul self este:").out_string(self.type_name());
+            cpy <- self;
+            temp <-cpy;
+            while (not isvoid temp) loop{
+                --out_string("help2");
+                min <- temp;
+                r <- temp.extractNext();
+                while( not isvoid r) loop{
+                    cmp_result <- cmp.compare(min.getContent(),r.getContent());
+                    if(option = "descendent") then cmp_result<-cmp_result*(1-2) else 0 fi;
 
-    filterBy():SELF_TYPE {
-        self (* TODO *)
-    };
+                    if ( 0 < cmp_result )then {
+                        min <- r;
+                    }  else 0 fi;
+                    r <- r.extractNext();
 
-    sortBy():SELF_TYPE {
-        self (* TODO *)
+                }pool;
+                aux <- temp.getContent();
+                temp.setContent(min.getContent());
+                min.setContent(aux);
+                temp <- temp.extractNext();
+
+                
+            }pool;
+            self;
+        }
     };
 };
 

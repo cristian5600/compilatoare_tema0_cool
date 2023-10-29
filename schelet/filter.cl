@@ -1,14 +1,25 @@
 class Filter inherits IO{
-    productFilter(list : List):Object{
+    filter(o : Object):Bool {true}; -- returnes true if it filtered something out
+};
+
+class ProductFilter inherits Filter{
+    filter(o : Object):Bool{
         let index:Int<- 1,  
-        cpy:List <- list,
+        cpy:List,
+        list:List,
         last:List,
         aux :Object,
         looping:Bool <- true,
+        result:Bool <- false,
         foundBad:Bool <- false,
         null:List
 
         in {
+            case o of
+                l:List => {cpy <- l;list <- l;};
+                o:Object =>{abort();"";};
+            esac;
+
             while( not isvoid cpy ) loop{
 
                 aux <- cpy.getContent();
@@ -21,6 +32,7 @@ class Filter inherits IO{
                         cpy <- cpy.extractNext(); 
                     };
                     o:Object => { 
+                        result <- false;
                         foundBad <- true;
                         list.extractRemoveElement(index);
 
@@ -39,18 +51,29 @@ class Filter inherits IO{
                 esac;
                 if(10 < index) then {abort();"";} else 0 fi;
             }pool;
+            result;
         }
     };
-    rankFilter(list : List):Object{
+};
+
+class RankFilter inherits Filter{
+    filter(o : Object):Bool{
         let index:Int<- 1,  
-        cpy:List <- list,
+        cpy:List,
+        list:List,
         last:List,
         aux :Object,
+        result:Bool<-true,
         looping:Bool <- true,
         foundBad:Bool <- false,
         null : List
 
         in {
+            case o of
+                l:List => {cpy <- l;list <- l;};
+                o:Object =>{abort();"";};
+            esac;
+
             while( not isvoid cpy ) loop{
 
                 aux <- cpy.getContent();
@@ -63,7 +86,7 @@ class Filter inherits IO{
                         cpy <- cpy.extractNext(); 
                     };
                     o:Object => { 
-                        
+                        result <- false;
                         foundBad <- true;
                         list.extractRemoveElement(index);
                         if(isvoid last) then { 
@@ -80,20 +103,29 @@ class Filter inherits IO{
                     };
                 esac;
             }pool;
+            result;
         }
     };
-    samePriceFilter(list : List):Object{
+};
+class SamePriceFilter inherits Filter{
+    filter(o : Object):Bool{
         let index:Int<- 1,  
-        cpy:List <- list,
+        cpy:List,
+        list:List,
         last:List,
         aux :Object,
+        result:Bool<-true,
         looping:Bool <- true,
         foundBad:Bool <- false,
         null : List,
         priceAsProduct:Int,
         price:Int
         in {
-            productFilter(list);
+            case o of
+                l:List => {cpy <- l;new ProductFilter.filter(l);list<-l;};
+                o:Object =>{abort();"";};
+            esac;
+            --new ProductFilter.filter(list);
             while( not isvoid cpy ) loop{
                 aux <- cpy.getContent();
                 case aux of 
@@ -118,6 +150,7 @@ class Filter inherits IO{
                         last <- cpy;
                         cpy <- cpy.extractNext(); 
                 }else{
+                    result <- false;
                      foundBad <- true;
                         list.extractRemoveElement(index);
                         if(isvoid last) then { 
@@ -130,7 +163,8 @@ class Filter inherits IO{
                         } else { cpy<-last; }fi;
                 } fi; 
             }pool;
+            result;
         }
     };
-
 };
+    

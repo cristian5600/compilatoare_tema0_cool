@@ -62,25 +62,34 @@ class Main inherits IO{
                 {
                 let null : List,
                     elem:List <- new List,
-                    soda:Soda<- new Soda.init("123","123",200),
+                    soda:Soda<- new Soda.init("123","1",1),
                     aux : Object in{
-                        elem.init((new Rank).init("marinescu"),null);
-                        elem.add((new Private).init("Abc"));
-                        elem.add((new Product).init("Abc","ads",101));
-                        elem.add((new Product).init("--","-",(new Product).init("--","--",soda.getStartPrice()).getprice()));
-                        elem.add(soda);
+                        elem.init((new Product).init("1","100",100),null);
+                        elem.add((new Soda).init("2","900",900));
+                        elem.add((new Product).init("3","15",15));
+                        elem.add((new Product).init("4","2",2));
+                        elem.add( soda);
 
-                        out_string(elem.toString()).out_string("\n");
-                        out_string("\nPrice of soda: ");
-                        out_int(soda.getprice());
-                        out_string("\n price of soda as Product: ");
-                        out_int((new Product).init("--","--",soda.getStartPrice()).getprice());
+                        -- out_string(elem.toString()).out_string("\n");
+                        -- out_string("\nPrice of soda: ");
+                        -- out_int(soda.getprice());
+                        -- out_string("\n price of soda as Product: ");
+                        -- out_int((new Product).init("--","--",soda.getStartPrice()).getprice());
+                        -- out_string("\n");
+                        -- out_string(elem.toString()).out_string("\n");
+                        -- new SamePriceFilter.filter(elem);
+                        -- out_string(elem.toString()).out_string("\n");
+                        -- out_int(new ProductComparator.compare((new Product).init("Abc","ads",999),
+                        --                                 (new Soda).init("aaa","bbb",999)));
+                        -- out_int(new RankComparator.compare(new Officer.init("a"),new Sergent.init("a")) );
+                        --if( "a" < "b" ) then out_string("EOKAY") else out_string("NUEOKAY") fi;
+
+                        -- out_string(elem.toString()).out_string("\n");
+                        -- elem.sortBy(new ProductComparator,"descendent");
+                        -- out_string(elem.toString()).out_string("\n");
+                        out_int(new AlphabeticComparator.compare("aab","aaa"));
                         out_string("\n");
-                        out_string(elem.toString()).out_string("\n");
-                        new Filter.samePriceFilter(elem);
-                        out_string(elem.toString()).out_string("\n");
-                        
-
+                        out_int(new AlphabeticComparator.compare("aa","aaa"));
                 };
                 --out_string("\n---");
                 out_string("\n");
@@ -224,27 +233,107 @@ class Main inherits IO{
                     if(option="ProductFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new Filter.productFilter(l); };
+                            l:List => { new ProductFilter.filter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
                     if(option="RankFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new Filter.rankFilter(l); };
+                            l:List => { new RankFilter.filter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
                     if(option="SamePriceFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new Filter.samePriceFilter(l); };
+                            l:List => { new SamePriceFilter.filter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
 
                 };
             
+            } else 0 fi;
+
+(*  *****************************************************
+    ***************  FilterBy  ***************************** *
+    *****************************************************  *)
+            if(somestr = "sortBy")then {
+                let index : Int,
+                listToSort : List,
+                aux : Object,
+                cpy : List <- lists,
+                count : Int<-0,
+                option1 : String,
+                option2 : String
+                in{
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent();
+                    case aux of
+                        s : String => { index <- new A2I.a2i_aux(s); };
+                        o : Object => {abort();};
+                    esac;
+                    if ( listsLength < index ) then abort() else 0 fi;
+                    -- while( count < listsLength ) loop{  -- extract list to sort
+                    --     if( count+1 = index )then{
+                    --         aux <- cpy.getContent();
+                    --         count <- listsLength ;
+                    --     } 
+                    --     else {
+                    --         cpy <- cpy.extractNext();
+                    --         count <- count+1;
+                    --     } fi;
+                    -- } pool;
+                    count <- 1;
+                    while( count < index) loop {
+                        cpy <- cpy.extractNext();
+                        count <- count + 1;
+                    } pool;
+
+
+
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent();
+                    case aux of
+                        s : String => { option1 <- s ;};
+                        o : Object => { abort(); };
+                    esac;
+                    cmd <- cmd.extractNext();
+                    aux <- cmd.getContent();
+                    case aux of
+                        s : String => { option2 <- s ;};
+                        o : Object => {abort();};
+                    esac;
+
+                    
+
+                    if(option1 = "PriceComparator") then{
+                        aux <- cpy.getContent();
+                        case aux of
+                            l:List => { l.sortBy(new ProductComparator,option2);};
+                            o:Object => {abort();};
+                        esac;
+
+                    }else 0 fi;
+                    if(option1 = "RankComparator") then{
+                        aux <- cpy.getContent();
+                        case aux of
+                            l:List => { l.sortBy(new RankComparator,option2);};
+                            o:Object => {abort();};
+                        esac;
+
+                    }else 0 fi;
+                    if(option1 = "AlphabeticComparator") then{
+                        aux <- cpy.getContent();
+                        case aux of
+                            l:List => { l.sortBy(new AlphabeticComparator,option2);};
+                            o:Object => {abort();};
+                        esac;
+
+                    }else 0 fi;
+
+                };
             } else 0 fi;
 
             if(somestr = "print")then {
