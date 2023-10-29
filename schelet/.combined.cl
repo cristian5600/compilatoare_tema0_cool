@@ -1,9 +1,5 @@
-(*  
-    ProductFilter - elimin ̆a din list ̆a obiecte ce nu mostenesc Product
-    RankFilter - elimin ̆a din list ̆a obiecte ce nu mos,tenesc Rank
-*)
-class ProductFilter inherits IO{
-    filterList(list : List):Object{
+class Filter inherits IO{
+    productFilter(list : List):Object{
         let index:Int<- 1,  
         cpy:List <- list,
         last:List,
@@ -25,8 +21,6 @@ class ProductFilter inherits IO{
                         cpy <- cpy.extractNext(); 
                     };
                     o:Object => { 
-                        --out_string("help");
-                        
                         foundBad <- true;
                         list.extractRemoveElement(index);
 
@@ -47,11 +41,7 @@ class ProductFilter inherits IO{
             }pool;
         }
     };
-};
-
-
-class RankFilter inherits IO{
-    filterList(list : List):Object{
+    rankFilter(list : List):Object{
         let index:Int<- 1,  
         cpy:List <- list,
         last:List,
@@ -76,8 +66,6 @@ class RankFilter inherits IO{
                         
                         foundBad <- true;
                         list.extractRemoveElement(index);
-
-                        --if(isvoid last) then { cpy<list; foundBad <- false; } else { cpy<-last; }fi;
                         if(isvoid last) then { 
                             aux <- list.getContent();
                             case aux of
@@ -91,14 +79,10 @@ class RankFilter inherits IO{
 
                     };
                 esac;
-                --if(10 < index) then {abort();"";} else 0 fi;
             }pool;
         }
     };
-};
-
-class SamePriceFilter inherits IO{
-    filterList(list : List):Object{
+    samePriceFilter(list : List):Object{
         let index:Int<- 1,  
         cpy:List <- list,
         last:List,
@@ -109,7 +93,7 @@ class SamePriceFilter inherits IO{
         priceAsProduct:Int,
         price:Int
         in {
-            new ProductFilter.filterList(list);
+            productFilter(list);
             while( not isvoid cpy ) loop{
                 aux <- cpy.getContent();
                 case aux of 
@@ -148,6 +132,7 @@ class SamePriceFilter inherits IO{
             }pool;
         }
     };
+
 };
 class List inherits IO{
 
@@ -438,7 +423,7 @@ class Main inherits IO{
                         out_int((new Product).init("--","--",soda.getStartPrice()).getprice());
                         out_string("\n");
                         out_string(elem.toString()).out_string("\n");
-                        new SamePriceFilter.filterList(elem);
+                        new Filter.samePriceFilter(elem);
                         out_string(elem.toString()).out_string("\n");
                         
 
@@ -585,21 +570,21 @@ class Main inherits IO{
                     if(option="ProductFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new ProductFilter.filterList(l); };
+                            l:List => { new Filter.productFilter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
                     if(option="RankFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new RankFilter.filterList(l); };
+                            l:List => { new Filter.rankFilter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
                     if(option="SamePriceFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new SamePriceFilter.filterList(l); };
+                            l:List => { new Filter.samePriceFilter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
@@ -1060,11 +1045,6 @@ Class Token inherits IO{
 class Comparator {
     compareTo(o1 : Object, o2 : Object):Int {0};
 };
-
-class Filter {
-    filter(o : Object):Bool {true};
-};
-
 (* TODO: implement specified comparators and filters*)
 
 class A2I {

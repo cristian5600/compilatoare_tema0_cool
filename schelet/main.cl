@@ -77,7 +77,7 @@ class Main inherits IO{
                         out_int((new Product).init("--","--",soda.getStartPrice()).getprice());
                         out_string("\n");
                         out_string(elem.toString()).out_string("\n");
-                        new SamePriceFilter.filterList(elem);
+                        new Filter.samePriceFilter(elem);
                         out_string(elem.toString()).out_string("\n");
                         
 
@@ -224,21 +224,21 @@ class Main inherits IO{
                     if(option="ProductFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new ProductFilter.filterList(l); };
+                            l:List => { new Filter.productFilter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
                     if(option="RankFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new RankFilter.filterList(l); };
+                            l:List => { new Filter.rankFilter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
                     if(option="SamePriceFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new SamePriceFilter.filterList(l); };
+                            l:List => { new Filter.samePriceFilter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
