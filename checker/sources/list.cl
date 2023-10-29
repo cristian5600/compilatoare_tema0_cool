@@ -94,31 +94,19 @@ class List inherits IO{
     
     merge(other : List):SELF_TYPE {
     {
-        --out_string("\nAM INTRAT IN MERGE\n");
         let count:Int ,
         cpy:List <- self,
         cpy2:List <- self
         in{
             while( not isvoid cpy.extractNext() ) loop{
                 cpy <- cpy.extractNext();
-                --out_string("infit?\n");
-
-            } pool;
-            --cpy.setNext(other);
-            --out_string("inainte: ").out_string(cpy2.toString());
+            }pool;
 
             if( not isvoid other ) then{
                 cpy.setNext(other);
-            } 
-            else {abort();"";} fi;
+            }else {abort();"";} fi;
 
-            --out_string("dupa ").out_string(cpy2.toString());
         };
-
-        -- if( not isvoid other ) then{
-        -- setNext(other);
-        -- } else {abort();"";} fi;
-        --out_string("\nAM iesit din MERGE\n");
         self;
     }
     };
@@ -127,7 +115,6 @@ class List inherits IO{
 
     extractRemoveElement(index : Int):Object{
     {
-        --out_string("\nAM INTRAT IN extractRemoveElement \n");
         let aux:Object,
         auxList:List,
         cpy:List <- self,
@@ -135,16 +122,15 @@ class List inherits IO{
         null : List,
         count:Int <- 1 ,
         result: Object 
-
         in{
             while(not isvoid cpy) loop{   
 
                 if( count = index ) then { 
                     result <- cpy.getContent();
-
                     if(not isvoid lastElement) then {
                          lastElement.setNext( cpy.extractNext() ); 
                     } else 0 fi;
+
                     cpy <- null;
                 } 
                 else {
@@ -153,9 +139,6 @@ class List inherits IO{
                 } fi;  
 
                 if(index = 1) then {
-                    -- out_string("CEVA DUBIOS\n ");
-
-
                     result <- self.getContent();
                     auxList <- self;
                     auxList <- auxList.extractNext();
@@ -171,45 +154,23 @@ class List inherits IO{
                         self.setContent(auxList.getContent());
                     } fi;
 
-
-                    
                     cpy <- null;
                 } else 0 fi;
 
                 count <- count+1;
             }pool;
-
-            -- if(not isvoid lastElement) then { lastElement.setNext(null); } else 0 fi;
             if(isvoid result) then {out_string("\n NU E VOIE SA EXTRAGI VOID!!!!!!!!!!!!! \n");} else 0 fi;
-            
             result;
         };
     }
     };
-(*void selectionSort(node* head) 
-{ 
-    node* temp = head; 
-  
-    // Traverse the List 
-    while (temp) { 
-        node* min = temp; 
-        node* r = temp->next; 
-  
-        // Traverse the unsorted sublist 
-        while (r) { 
-            if (min->data > r->data) 
-                min = r; 
-  
-            r = r->next; 
-        } 
-  
-        // Swap Data 
-        int x = temp->data; 
-        temp->data = min->data; 
-        min->data = x; 
-        temp = temp->next; 
-    } 
-} *)
+    filterBy( myFilter:Filter ):Object{
+        let cpy:List<-self
+        in{
+            myFilter.filter(cpy);
+        }
+    };
+
     sortBy(cmp:Comparator, option:String):SELF_TYPE {
         let aux:Object ,
         cpy:List,
@@ -218,11 +179,9 @@ class List inherits IO{
         r:List,
         cmp_result:Int
         in{
-            --out_string("tipul self este:").out_string(self.type_name());
             cpy <- self;
             temp <-cpy;
             while (not isvoid temp) loop{
-                --out_string("help2");
                 min <- temp;
                 r <- temp.extractNext();
                 while( not isvoid r) loop{
@@ -232,15 +191,15 @@ class List inherits IO{
                     if ( 0 < cmp_result )then {
                         min <- r;
                     }  else 0 fi;
-                    r <- r.extractNext();
 
+                    r <- r.extractNext();
                 }pool;
+                
                 aux <- temp.getContent();
                 temp.setContent(min.getContent());
                 min.setContent(aux);
                 temp <- temp.extractNext();
 
-                
             }pool;
             self;
         }

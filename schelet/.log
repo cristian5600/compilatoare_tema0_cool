@@ -1,2 +1,2 @@
-[ Private(a), Private(e), Private(i), Corporal(b), Corporal(f), Corporal(j), Sergent(c), Sergent(g), Sergent(k), Officer(d), Officer(h), Officer(l) ]
-[ Private(a), Private(e), Private(i), Corporal(b), Corporal(f), Corporal(j), Sergent(c), Sergent(g), Sergent(k), Officer(d), Officer(h), Officer(l) ]
+[ Soda(a;a1), Soda(a;ConstPrice), Soda(a;a3), Soda(a;a4), Router(b1;always), Router(b2;always), Laptop(cx;never), Coffee(d1;always), Coffee(d2;always) ]
+[ Soda(a;ConstPrice), Router(b1;always), Router(b2;always), Coffee(d1;always), Coffee(d2;always) ]

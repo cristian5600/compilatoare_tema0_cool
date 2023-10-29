@@ -164,6 +164,12 @@ class List inherits IO{
         };
     }
     };
+    filterBy( myFilter:Filter ):Object{
+        let cpy:List<-self
+        in{
+            myFilter.filter(cpy);
+        }
+    };
 
     sortBy(cmp:Comparator, option:String):SELF_TYPE {
         let aux:Object ,
@@ -194,7 +200,6 @@ class List inherits IO{
                 min.setContent(aux);
                 temp <- temp.extractNext();
 
-                
             }pool;
             self;
         }

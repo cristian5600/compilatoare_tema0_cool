@@ -473,6 +473,12 @@ class List inherits IO{
         };
     }
     };
+    filterBy( myFilter:Filter ):Object{
+        let cpy:List<-self
+        in{
+            myFilter.filter(cpy);
+        }
+    };
 
     sortBy(cmp:Comparator, option:String):SELF_TYPE {
         let aux:Object ,
@@ -503,7 +509,6 @@ class List inherits IO{
                 min.setContent(aux);
                 temp <- temp.extractNext();
 
-                
             }pool;
             self;
         }
@@ -596,7 +601,11 @@ class Main inherits IO{
                         -- out_int(new RankComparator.compare(new Officer.init("a"),new Sergent.init("a")) );
                         --if( "a" < "b" ) then out_string("EOKAY") else out_string("NUEOKAY") fi;
                         out_string(elem.toString()).out_string("\n");
+
                         elem.sortBy(new ProductComparator,"descendent");
+                        out_string(elem.toString()).out_string("\n");
+
+                        elem.filterBy(new SamePriceFilter);
                         out_string(elem.toString()).out_string("\n");
 
                 };
@@ -732,21 +741,21 @@ class Main inherits IO{
                     if(option="ProductFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new ProductFilter.filter(l); };
+                            l:List => { l.filterBy(new ProductFilter);}; --new ProductFilter.filter(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
                     if(option="RankFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new RankFilter.filter(l); };
+                            l:List => { l.filterBy(new RankFilter); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
                     if(option="SamePriceFilter") then {
                         aux <- cpy.getContent();
                         case aux of
-                            l:List => { new SamePriceFilter.filter(l); };
+                            l:List => { l.filterBy(new SamePriceFilter); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
@@ -756,7 +765,7 @@ class Main inherits IO{
             } else 0 fi;
 
 (*  *****************************************************
-    ***************  FilterBy  ***************************** *
+    ***************  SortBy  ***************************** *
     ***************************************************** 
     ****************************************************
     **************************************************** *)
