@@ -13,41 +13,34 @@ class List inherits IO{
     };
 
     extractNext() : List{
-        {
-        next;
-        }
+        next
     };
+
     setNext(l:List) : List{
-        {
-            --out_string("am setat next??\n");
-            next <- l;
-        --self;
-        }
+        next <- l
     };
     getContent() : Object {
-        {
-        elem;
-        }
+        elem
     };
     setContent(o:Object):Object{
         elem <-o
     };
     add(obj : Object):SELF_TYPE {
         let null:List,
-            coppy:List <- self,
-            aux : List <- new List.init(obj,null)  
-                in 
-                {
-                    coppy.setNext(self.extractNext());
-                    while ( not (isvoid coppy.extractNext()) ) loop
-                    {
-                        coppy <- coppy.extractNext();
-                    }
-                    pool;  
-                    coppy.setNext(aux);
-                    self;
-                }
-         
+        coppy:List <- self,
+        aux : List <- new List.init(obj,null)  
+        in 
+        {
+            coppy.setNext(self.extractNext());
+            while ( not (isvoid coppy.extractNext()) ) loop
+            {
+                coppy <- coppy.extractNext();
+            }
+            pool;  
+
+            coppy.setNext(aux);
+            self;
+        }
     };
 
     toString():String {
@@ -55,11 +48,9 @@ class List inherits IO{
             null:List,
             aux:Object,
             count:Int <-0,
-            result:String <- "[ " in --self.getContent().type_name() in 
+            result:String <- "[ " in 
             {
-                
                 aux <- coppy.getContent();
-                --out_string(aux.type_name());
                 case aux of
                         p : Product => {result <- result.concat(p.toString());};  
                         r : Rank => {   result <- result.concat(r.toString());};        
@@ -70,7 +61,6 @@ class List inherits IO{
                 while ( not (isvoid coppy.extractNext()) ) loop
                 {
                     coppy <- coppy.extractNext();
-                    --out_string("AM INTRAT in lista\n");
                     aux <- coppy.getContent();
                     case aux of
                         p : Product => {result <-(result.concat(", ").concat(p .toString()));};
@@ -96,8 +86,6 @@ class List inherits IO{
                     esac;
                 }
                 pool;
-                --out_string(result);
-                --result.concat(")");
                 result <- result.concat(" ]");
                 result;
             }
@@ -106,31 +94,19 @@ class List inherits IO{
     
     merge(other : List):SELF_TYPE {
     {
-        --out_string("\nAM INTRAT IN MERGE\n");
         let count:Int ,
         cpy:List <- self,
         cpy2:List <- self
         in{
             while( not isvoid cpy.extractNext() ) loop{
                 cpy <- cpy.extractNext();
-                --out_string("infit?\n");
-
-            } pool;
-            --cpy.setNext(other);
-            --out_string("inainte: ").out_string(cpy2.toString());
+            }pool;
 
             if( not isvoid other ) then{
                 cpy.setNext(other);
-            } 
-            else {abort();"";} fi;
+            }else {abort();"";} fi;
 
-            --out_string("dupa ").out_string(cpy2.toString());
         };
-
-        -- if( not isvoid other ) then{
-        -- setNext(other);
-        -- } else {abort();"";} fi;
-        --out_string("\nAM iesit din MERGE\n");
         self;
     }
     };
@@ -139,7 +115,6 @@ class List inherits IO{
 
     extractRemoveElement(index : Int):Object{
     {
-        --out_string("\nAM INTRAT IN extractRemoveElement \n");
         let aux:Object,
         auxList:List,
         cpy:List <- self,
@@ -147,16 +122,15 @@ class List inherits IO{
         null : List,
         count:Int <- 1 ,
         result: Object 
-
         in{
             while(not isvoid cpy) loop{   
 
                 if( count = index ) then { 
                     result <- cpy.getContent();
-
                     if(not isvoid lastElement) then {
                          lastElement.setNext( cpy.extractNext() ); 
                     } else 0 fi;
+
                     cpy <- null;
                 } 
                 else {
@@ -165,9 +139,6 @@ class List inherits IO{
                 } fi;  
 
                 if(index = 1) then {
-                    -- out_string("CEVA DUBIOS\n ");
-
-
                     result <- self.getContent();
                     auxList <- self;
                     auxList <- auxList.extractNext();
@@ -183,45 +154,17 @@ class List inherits IO{
                         self.setContent(auxList.getContent());
                     } fi;
 
-
-                    
                     cpy <- null;
                 } else 0 fi;
 
                 count <- count+1;
             }pool;
-
-            -- if(not isvoid lastElement) then { lastElement.setNext(null); } else 0 fi;
             if(isvoid result) then {out_string("\n NU E VOIE SA EXTRAGI VOID!!!!!!!!!!!!! \n");} else 0 fi;
-            
             result;
         };
     }
     };
-(*void selectionSort(node* head) 
-{ 
-    node* temp = head; 
-  
-    // Traverse the List 
-    while (temp) { 
-        node* min = temp; 
-        node* r = temp->next; 
-  
-        // Traverse the unsorted sublist 
-        while (r) { 
-            if (min->data > r->data) 
-                min = r; 
-  
-            r = r->next; 
-        } 
-  
-        // Swap Data 
-        int x = temp->data; 
-        temp->data = min->data; 
-        min->data = x; 
-        temp = temp->next; 
-    } 
-} *)
+
     sortBy(cmp:Comparator, option:String):SELF_TYPE {
         let aux:Object ,
         cpy:List,
@@ -230,11 +173,9 @@ class List inherits IO{
         r:List,
         cmp_result:Int
         in{
-            --out_string("tipul self este:").out_string(self.type_name());
             cpy <- self;
             temp <-cpy;
             while (not isvoid temp) loop{
-                --out_string("help2");
                 min <- temp;
                 r <- temp.extractNext();
                 while( not isvoid r) loop{
@@ -244,9 +185,10 @@ class List inherits IO{
                     if ( 0 < cmp_result )then {
                         min <- r;
                     }  else 0 fi;
-                    r <- r.extractNext();
 
+                    r <- r.extractNext();
                 }pool;
+                
                 aux <- temp.getContent();
                 temp.setContent(min.getContent());
                 min.setContent(aux);

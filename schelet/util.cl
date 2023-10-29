@@ -1,7 +1,6 @@
 (* TODO: implement specified comparators and filters*)
 
 class A2I {
-
      c2i(char : String) : Int {
     if char = "0" then 0 else
     if char = "1" then 1 else
@@ -34,14 +33,12 @@ class A2I {
     { abort(); ""; }  -- the "" is needed to satisfy the typchecker
         fi fi fi fi fi fi fi fi fi fi
      };
-
 (*
    a2i converts an ASCII string into an integer.  The empty string
 is converted to 0.  Signed and unsigned strings are handled.  The
 method aborts if the string does not represent an integer.  Very
 long strings of digits produce strange answers because of arithmetic 
 overflow.
-
 *)
      a2i(s : String) : Int {
         if s.length() = 0 then 0 else

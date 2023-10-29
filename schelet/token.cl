@@ -1,7 +1,5 @@
 Class Token inherits IO{
-
     whereSpace(str:String):Int{
-        
             let 
             i:Int<-0,
             l:Int<-0,
@@ -31,15 +29,10 @@ Class Token inherits IO{
             in
             {
                 while ( 0 < whereSpace(coppy) ) loop{ --"am rezolvat chestia asta"
-
                     len <- whereSpace(coppy); 
-
                     aux <- coppy.substr(0,len);
-                    
                     i <- len;
-
                     coppy <- coppy.substr(i+1,coppy.length()-i-1);
-                    
                     if(isvoid list) then 
                         {
                             list <- (new List).init(aux,null) ; 

@@ -50,10 +50,10 @@ class RankComparator inherits Comparator{
             esac;
             case o2 of
                 r:Rank => {abort();"";};
-                p:Private =>   { score2 <- 4; };
-                c:Corporal =>  { score2 <- 3; };
-                s: Sergent =>  { score2 <- 2; };
-                off: Officer =>{ score2 <- 1; };
+                p:Private =>    { score2 <- 4; };
+                c:Corporal =>   { score2 <- 3; };
+                s: Sergent =>   { score2 <- 2; };
+                off: Officer => { score2 <- 1; };
                 o:Object => {abort();"";};
             esac;
             if( score1 < score2 ) then result<- 1      else 0 fi;
