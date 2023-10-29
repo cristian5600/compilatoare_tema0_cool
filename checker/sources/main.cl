@@ -13,29 +13,29 @@ class Main inherits IO{
 
     main():Object {
         {
-        let input:String <- "?",    -- SE FACE UN LOAD()
-                    input_list:List,
-                    void:List
-                     in
-                    { 
-                        loopingLoad <- true;  
-                        while (loopingLoad) loop {
-                            input <- in_string();
-                            if (not (input = "END")) then 
-                            {                           
-                                let mylist:List,
-                                    token:Token <- new Token ,
-                                    command : List
-                                    in{
-                                        mylist <- token.getTokenList( input );
-                                        load(mylist);
-                                    };
-                            } 
-                        else { loopingLoad <- false; } fi;
-                        }pool;
-                        listsLength <- listsLength + 1;
-                        --print(1);
-                    }; 
+        let input:String <- "",    -- SE FACE UN LOAD()
+        input_list:List,
+        void:List
+        in{ 
+            loopingLoad <- true;  
+            while (loopingLoad) loop {
+                input <- in_string();
+                if (not (input = "END")) then 
+                {                           
+                    let mylist:List,
+                        token:Token <- new Token ,
+                        command : List
+                        in{
+                            mylist <- token.getTokenList( input );
+                            load(mylist);
+                        };
+                } 
+                else { loopingLoad <- false; } fi;
+
+            }pool;
+
+            listsLength <- listsLength + 1;
+        }; 
 
         while looping loop {
             somestr <- in_string();
