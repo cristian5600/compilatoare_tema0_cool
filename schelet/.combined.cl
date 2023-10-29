@@ -25,7 +25,7 @@ class ProductFilter inherits IO{
                         cpy <- cpy.extractNext(); 
                     };
                     o:Object => { 
-                        out_string("help");
+                        --out_string("help");
                         
                         foundBad <- true;
                         list.extractRemoveElement(index);
@@ -95,7 +95,61 @@ class RankFilter inherits IO{
             }pool;
         }
     };
-};class List inherits IO{
+};
+
+class SamePriceFilter inherits IO{
+    filterList(list : List):Object{
+        let index:Int<- 1,  
+        cpy:List <- list,
+        last:List,
+        aux :Object,
+        looping:Bool <- true,
+        foundBad:Bool <- false,
+        null : List,
+        priceAsProduct:Int,
+        price:Int
+        in {
+            new ProductFilter.filterList(list);
+            while( not isvoid cpy ) loop{
+                aux <- cpy.getContent();
+                case aux of 
+                    p : Product => { price <- p.getprice(); 
+                                    priceAsProduct <- (new Product).init("-","-",p.getStartPrice()).getprice();};
+                    e : Edible =>  { price <- e.getprice(); 
+                                    priceAsProduct <- (new Product).init("-","-",e.getStartPrice()).getprice(); };
+                    s: Soda    =>  { price <- s.getprice(); 
+                                    priceAsProduct <- (new Product).init("-","-",s.getStartPrice()).getprice(); };
+                    c : Coffee =>  { price <- c.getprice(); 
+                                    priceAsProduct <- (new Product).init("-","-",c.getStartPrice()).getprice(); };
+                    l : Laptop =>  { price <- l.getprice(); 
+                                    priceAsProduct <- (new Product).init("-","-",l.getStartPrice()).getprice(); };
+                    r : Router =>  { price <- r.getprice(); 
+                                    priceAsProduct <- (new Product).init("-","-",r.getStartPrice()).getprice(); };
+                    o : Object => {abort(); "";};
+                esac;
+
+                if(price = priceAsProduct) then{
+                    if(foundBad = false) then {index<-index+1;} else 0 fi;
+                        foundBad <- false;
+                        last <- cpy;
+                        cpy <- cpy.extractNext(); 
+                }else{
+                     foundBad <- true;
+                        list.extractRemoveElement(index);
+                        if(isvoid last) then { 
+                            aux <- list.getContent();
+                            case aux of
+                                e : Empty => {  cpy <- null; };
+                                o : Object => { cpy<- list; };
+                            esac;
+                            foundBad <- false; 
+                        } else { cpy<-last; }fi;
+                } fi; 
+            }pool;
+        }
+    };
+};
+class List inherits IO{
 
     (* TODO: store data *)
     elem : Object;
@@ -369,16 +423,23 @@ class Main inherits IO{
                 {
                 let null : List,
                     elem:List <- new List,
+                    soda:Soda<- new Soda.init("123","123",200),
                     aux : Object in{
                         elem.init((new Rank).init("marinescu"),null);
                         elem.add((new Private).init("Abc"));
-                        
-                        out_string(elem.toString()).out_string("\n");
-                        new ProductFilter.filterList(elem);
-                        -- elem.extractRemoveElement(1);
-                        -- elem.extractRemoveElement(1);
+                        elem.add((new Product).init("Abc","ads",101));
+                        elem.add((new Product).init("--","-",(new Product).init("--","--",soda.getStartPrice()).getprice()));
+                        elem.add(soda);
 
-                        out_string(elem.toString());
+                        out_string(elem.toString()).out_string("\n");
+                        out_string("\nPrice of soda: ");
+                        out_int(soda.getprice());
+                        out_string("\n price of soda as Product: ");
+                        out_int((new Product).init("--","--",soda.getStartPrice()).getprice());
+                        out_string("\n");
+                        out_string(elem.toString()).out_string("\n");
+                        new SamePriceFilter.filterList(elem);
+                        out_string(elem.toString()).out_string("\n");
                         
 
                 };
@@ -532,6 +593,13 @@ class Main inherits IO{
                         aux <- cpy.getContent();
                         case aux of
                             l:List => { new RankFilter.filterList(l); };
+                            o:Object => {abort();};
+                        esac;
+                    }else 0 fi;
+                    if(option="SamePriceFilter") then {
+                        aux <- cpy.getContent();
+                        case aux of
+                            l:List => { new SamePriceFilter.filterList(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;
@@ -851,7 +919,7 @@ class Product {
         price <- p;
         self;
     }};
-
+    getStartPrice():Int { price };
     getprice():Int{ price * 119 / 100 };
 
     toString():String {

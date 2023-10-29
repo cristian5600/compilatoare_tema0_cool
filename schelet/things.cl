@@ -12,7 +12,7 @@ class Product {
         price <- p;
         self;
     }};
-
+    getStartPrice():Int { price };
     getprice():Int{ price * 119 / 100 };
 
     toString():String {

@@ -62,16 +62,23 @@ class Main inherits IO{
                 {
                 let null : List,
                     elem:List <- new List,
+                    soda:Soda<- new Soda.init("123","123",200),
                     aux : Object in{
                         elem.init((new Rank).init("marinescu"),null);
                         elem.add((new Private).init("Abc"));
-                        
-                        out_string(elem.toString()).out_string("\n");
-                        new ProductFilter.filterList(elem);
-                        -- elem.extractRemoveElement(1);
-                        -- elem.extractRemoveElement(1);
+                        elem.add((new Product).init("Abc","ads",101));
+                        elem.add((new Product).init("--","-",(new Product).init("--","--",soda.getStartPrice()).getprice()));
+                        elem.add(soda);
 
-                        out_string(elem.toString());
+                        out_string(elem.toString()).out_string("\n");
+                        out_string("\nPrice of soda: ");
+                        out_int(soda.getprice());
+                        out_string("\n price of soda as Product: ");
+                        out_int((new Product).init("--","--",soda.getStartPrice()).getprice());
+                        out_string("\n");
+                        out_string(elem.toString()).out_string("\n");
+                        new SamePriceFilter.filterList(elem);
+                        out_string(elem.toString()).out_string("\n");
                         
 
                 };
@@ -225,6 +232,13 @@ class Main inherits IO{
                         aux <- cpy.getContent();
                         case aux of
                             l:List => { new RankFilter.filterList(l); };
+                            o:Object => {abort();};
+                        esac;
+                    }else 0 fi;
+                    if(option="SamePriceFilter") then {
+                        aux <- cpy.getContent();
+                        case aux of
+                            l:List => { new SamePriceFilter.filterList(l); };
                             o:Object => {abort();};
                         esac;
                     }else 0 fi;

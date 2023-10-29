@@ -17,7 +17,7 @@ Class Token inherits IO{
                     else 0 fi;
                     i<-i+1;
                 }pool;
-                result;
+                result;  
             }
     };
     getTokenList(str:String):List{
